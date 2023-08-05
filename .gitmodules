@@ -1,0 +1,4 @@
+[submodule "src/firmware/thirdparty/cmake-microchip"]
+	path = src/firmware/thirdparty/cmake-microchip
+	url = https://github.com/enbyted/cmake-microchip.git
+	branch = xc8-cc

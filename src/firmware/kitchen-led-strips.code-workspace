@@ -1,0 +1,52 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"C_Cpp.default.cStandard": "c99",
+		"C_Cpp.default.compilerPath": "/opt/microchip/xc8/v2.32/bin/xc8-cc",
+		"C_Cpp.default.includePath": [
+			"/opt/microchip/xc8/v2.32/pic/include",
+			"/opt/microchip/xc8/v2.32/pic/include/c99",
+			"/opt/microchip/xc8/v2.32/pic/include/proc"],
+		"C_Cpp.default.defines": [
+			"_DEBUG",
+			"_GNU_SOURCE=0",
+			"_BSD_SOURCE=0",
+			"__16F15356",
+			"__XC",
+			"__XC8",
+			"__XC8_VERSION=2000",
+			"_16F15356",
+			"_HTC_EDITION_=2",
+			"__PICCPRO__",
+			"__PICC__",
+			"_PIC14E",
+			"HI_TECH_C"
+		],
+		"files.associations": {
+			"stdint.h": "c"
+		}
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"type": "cmake",
+				"label": "build (CMake)",
+				"command": "build",
+				"options": {
+					"cwd": "${workspaceFolder}"
+				},
+				"targets": [
+					"kitchen-led-strips"
+				],
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "CMake Build Task"
+			}
+		]
+	}
+}
