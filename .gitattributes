@@ -2,3 +2,5 @@
 * text eol=lf
 *.ods binary
 *.pdf binary
+*.dxf binary
+*.zip binary
