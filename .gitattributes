@@ -4,3 +4,7 @@
 *.pdf binary
 *.dxf binary
 *.zip binary
+*.inx binary
+*.cir binary
+*.ibs binary
+*.TNO binary
