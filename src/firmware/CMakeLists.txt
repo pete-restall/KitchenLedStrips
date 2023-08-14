@@ -26,4 +26,5 @@ target_sources(
 		src/event.c
 		src/initialise.c
 		src/poll.c
+		src/pwm-timer.c
 		src/power-management.c)
