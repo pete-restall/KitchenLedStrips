@@ -6023,7 +6023,7 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 4d91fc40-cbb2-4fc2-8134-8ce8d6a1238e)
   )
-  (text "Maximum LED strip is 5m@14.4W/m\nInput is 12V_{dc}±10%, maximum 7A."
+  (text "Maximum LED strip is 5m@14.4W/m\nInput is 12V_{dc}±10%, maximum 8A."
     (at 26.67 17.78 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 68c9395b-4262-4442-bfc3-0693faf2b880)
