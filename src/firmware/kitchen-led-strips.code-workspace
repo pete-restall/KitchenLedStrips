@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
+		"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
 		"C_Cpp.default.cStandard": "c99",
 		"C_Cpp.default.compilerPath": "/opt/microchip/xc8/v2.32/bin/xc8-cc",
 		"C_Cpp.default.includePath": [
