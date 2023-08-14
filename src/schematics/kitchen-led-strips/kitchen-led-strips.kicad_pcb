@@ -1237,6 +1237,8 @@
     (descr "Ferrite Bead 0805 (Laird - https://www.laird.com/sites/default/files/hi0805r800r-10-datasheet.pdf)")
     (tags "L ferrite bead inductor filter")
     (property "Manufacturer" "Laird Signal Integrity")
+    (property "Manufacturer2" "Walsin")
+    (property "Manufacturer2PartNumber" "WLBD2012HCU121TH")
     (property "ManufacturerPartNumber" "HI0805R800R-10")
     (property "Package" "0805")
     (property "Sheetfile" "kitchen-led-strips.kicad_sch")
