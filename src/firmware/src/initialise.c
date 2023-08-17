@@ -4,6 +4,7 @@
 #include "initialise.h"
 #include "power-management.h"
 #include "pwm-timer.h"
+#include "rgb-leds.h"
 
 static void initialisePins(void);
 
@@ -13,6 +14,7 @@ void initialise(void)
 	eventInitialise();
 	powerManagementInitialise();
 	pwmTimerInitialise();
+	rgbLedsInitialise();
 	eventPublish(SYSTEM_INITIALISED, &eventEmptyArgs);
 }
 
