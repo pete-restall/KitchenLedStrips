@@ -25,7 +25,7 @@ void circularBufferCreate(volatile struct CircularBuffer *buf, uint8_t *start, u
 
 bool circularBufferTryRead(struct CircularBuffer *buf, uint8_t *value)
 {
-	if (!circularBufferCanRead(buf))
+	if (!circularBufferCanRead(buf) || !buf->readPtr)
 		return false;
 
 	if (value)
@@ -59,7 +59,7 @@ static bool circularBufferCanWrite(const struct CircularBuffer *buf)
 
 void circularBufferForceWrite(struct CircularBuffer *buf, uint8_t value)
 {
-	if (!buf)
+	if (!buf || !buf->writePtr)
 		return;
 
 	*buf->writePtr = value;
@@ -69,9 +69,19 @@ void circularBufferForceWrite(struct CircularBuffer *buf, uint8_t value)
 	buf->nextWriteOverflows = (buf->readPtr == buf->writePtr);
 }
 
-bool circularBufferIsrTryRead(volatile struct CircularBuffer *buf, uint8_t *value)
+void circularBufferReset(struct CircularBuffer *buf)
 {
 	if (!buf)
+		return;
+
+	buf->readPtr = buf->start;
+	buf->writePtr = buf->start;
+	buf->nextWriteOverflows = false;
+}
+
+bool circularBufferIsrTryRead(volatile struct CircularBuffer *buf, uint8_t *value)
+{
+	if (!buf || !buf->readPtr)
 		return false;
 
 	bool interruptsAreEnabled = INTCONbits.GIE != 0;
@@ -125,7 +135,7 @@ static bool circularBufferIsrCanWrite(const volatile struct CircularBuffer *buf)
 
 void circularBufferIsrForceWrite(volatile struct CircularBuffer *buf, uint8_t value)
 {
-	if (!buf)
+	if (!buf || !buf->writePtr)
 		return;
 
 	bool interruptsAreEnabled = INTCONbits.GIE != 0;
@@ -136,6 +146,22 @@ void circularBufferIsrForceWrite(volatile struct CircularBuffer *buf, uint8_t va
 		buf->writePtr = buf->start;
 
 	buf->nextWriteOverflows = (buf->readPtr == buf->writePtr);
+
+	if (interruptsAreEnabled)
+		INTCONbits.GIE = 1;
+}
+
+void circularBufferIsrReset(volatile struct CircularBuffer *buf)
+{
+	if (!buf)
+		return;
+
+	bool interruptsAreEnabled = INTCONbits.GIE != 0;
+	INTCONbits.GIE = 0;
+
+	buf->readPtr = buf->start;
+	buf->writePtr = buf->start;
+	buf->nextWriteOverflows = false;
 
 	if (interruptsAreEnabled)
 		INTCONbits.GIE = 1;

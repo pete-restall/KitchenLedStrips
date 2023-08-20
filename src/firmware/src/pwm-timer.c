@@ -14,6 +14,8 @@
 #define T2HLT_MODE_FREE 0
 #define T2HLT_MODE_SOFTGATE 0
 
+#define PR2_800KHZ 9
+
 static uint8_t enableCount;
 
 void pwmTimerInitialise(void)
@@ -30,7 +32,7 @@ void pwmTimerInitialise(void)
 		T2HLT_MODE_FREE |
 		T2HLT_MODE_SOFTGATE;
 
-	PR2 = 9;
+	PR2 = PR2_800KHZ;
 	PIR4bits.TMR2IF = 0;
 	PIE4bits.TMR2IE = 0;
 }

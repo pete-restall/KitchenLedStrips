@@ -17,9 +17,11 @@ extern void circularBufferCreate(volatile struct CircularBuffer *buf, uint8_t *s
 extern bool circularBufferTryRead(struct CircularBuffer *buf, uint8_t *value);
 extern bool circularBufferTryWrite(struct CircularBuffer *buf, uint8_t value);
 extern void circularBufferForceWrite(struct CircularBuffer *buf, uint8_t value);
+extern void circularBufferReset(struct CircularBuffer *buf);
 
 extern bool circularBufferIsrTryRead(volatile struct CircularBuffer *buf, uint8_t *value);
 extern bool circularBufferIsrTryWrite(volatile struct CircularBuffer *buf, uint8_t value);
 extern void circularBufferIsrForceWrite(volatile struct CircularBuffer *buf, uint8_t value);
+extern void circularBufferIsrReset(volatile struct CircularBuffer *buf);
 
 #endif

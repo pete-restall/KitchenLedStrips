@@ -9,7 +9,7 @@ endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=${MICROCHIP_MCU} -Wa,-a")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O1")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O2")
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -gdwarf-3 -Wl,-AID=0x8006-0x8007 -Wl,-PID=ID --fill=0x3fff -mserial=0000@8005 -mserial=ae30@8006")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,-Map=\"${CMAKE_CURRENT_BINARY_DIR}/kitchen-led-strips.map\"")
@@ -37,4 +37,5 @@ target_sources(
 		src/poll.c
 		src/pwm-timer.c
 		src/power-management.c
-		src/rgb-leds.c)
+		src/rgb-leds.c
+		src/sm16703p-modulator.c)
