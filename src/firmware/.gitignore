@@ -1,1 +1,10 @@
-build
+*.hex
+*.cod
+*.cof
+*.map
+*.lst
+*.o
+*.a
+*.log
+log.*
+MPLAB*

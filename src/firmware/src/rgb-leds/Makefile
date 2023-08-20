@@ -1,0 +1,14 @@
+LIB_FILENAME=../rgb-leds.a
+
+OBJ_FILES=\
+	initialise.o
+
+all: $(LIB_FILENAME)
+
+clean:
+	$(RM) -f $(BUILD_ARTEFACT_PATTERN)
+
+$(LIB_FILENAME): $(OBJ_FILES)
+	$(GPLIB_MERGE) $(LIB_FILENAME) $(OBJ_FILES)
+
+include $(MAKEFILE_RULES)
