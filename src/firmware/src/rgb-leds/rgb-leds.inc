@@ -1,0 +1,6 @@
+	#ifndef __KITCHENLEDS_RGBLEDS_RGBLEDS_INC
+	#define __KITCHENLEDS_RGBLEDS_RGBLEDS_INC
+
+	radix decimal
+
+	#endif
