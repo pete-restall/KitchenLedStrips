@@ -170,3 +170,8 @@ SHAREBANK  NAME=gprnobank  START=0x1FF0          END=0x1FFF         PROTECTED
 SECTION    NAME=PROG0      ROM=page0           // ROM code space - page0
 SECTION    NAME=IDLOCS     ROM=.idlocs         // ID locations
 SECTION    NAME=LINEAR0    RAM=linear0         // Linear Memory
+
+DATABANK   NAME=isrTxBuffer       START=0x20     END=0x6D
+
+SECTION    NAME=.isrSharedData    RAM=gprnobank
+SECTION    NAME=.isrTxBuffer      RAM=isrTxBuffer
