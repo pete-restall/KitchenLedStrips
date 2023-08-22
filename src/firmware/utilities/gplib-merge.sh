@@ -11,7 +11,7 @@ tempDir="`mktemp -d`";
 echo "gplib-merge.sh: using temporary directory ${tempDir}";
 cp ${@:2} ${tempDir};
 cd $tempDir;
-archives=`ls *.a 1>/dev/null 2>&1`;
+archives=`ls *.a 2>/dev/null`;
 if [ $? -eq 0 ]; then
 	${utilitiesDir}/gplib-extract.sh ${archives};
 fi;
