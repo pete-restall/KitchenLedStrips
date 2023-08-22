@@ -1,0 +1,20 @@
+Module and Resource Allocation
+==============================
+rgb-leds:
+	UART1 is used for serial transmission; SPI would be better as it is the
+	native SM16703P / WS2812B protocol (MSb-first as opposed to UART's
+	LSb-first) but because of a lack of double-buffering the timing constraints
+	are unrealistic.
+
+	TIMER2 is the timebase for the UART bit modulators.
+
+	PWM3 is used for a long on-time bit (1).
+
+	PWM4 is used for a short on-time bit (0).
+
+	CLC1-4 are used to modulate the UART1 DT pin by steering either the
+	long on-time (PWM3) or short on-time (PWM4) to CLC1OUT.
+
+	FSR1 is allocated to a circular buffer for UART1's TX1REG bytes.  There
+	can be no gap in between byte transmission as the LEDs expect a constant
+	baud of 800kHz without a clock.
