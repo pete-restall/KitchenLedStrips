@@ -6,8 +6,11 @@ HEX_FILENAME=kitchen-led-strips.hex
 OBJ_FILES=\
 	boot.o \
 	config-words.o \
+	initialise.o \
 	isr.o \
 	main.o \
+	pins.o \
+	power-management.o \
 	rgb-leds.a
 
 all: $(HEX_FILENAME)
