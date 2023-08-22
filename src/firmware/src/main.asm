@@ -1,65 +1,104 @@
-	#include "mcu.inc"
+	#include "mcu.inc"                            ;;;;;;; TODO: TEMPORARY DEBUGGING !
+	#include "initialise.inc"
 
 	radix decimal
 
-.udata udata
-_counter res 3
+.TODO_TEMPORARY udata
+_temp1 res 1
+_temp2 res 1
 
 .main code
 	global main
 
 main:
+	pagesel initialise
+	call initialise
+
+	banksel INTCON
+	bsf INTCON, PEIE
+	bsf INTCON, GIE
+
+	banksel LATC ; TODO: MORE TEMPORARY DEBUGGING
+	bsf LATC, 4 ;;;;;;;; TODO: GREEN - TEMPORARY DEBUGGING
 	banksel LATC
-	bcf LATC, 6
+	bsf LATC, 5 ;;;;;;;; TODO: RED - TEMPORARY DEBUGGING
 
-	banksel ANSELC
-	bcf ANSELC, 6
+	pagesel _temporaryDebugging
+	call _temporaryDebugging
 
-	banksel TRISC
-	bcf TRISC, 6
+	banksel T2CON
+	movf T2CON, W
+	banksel LATC
+	btfsc WREG, EN
+	bcf LATC, 4 ;;;;;;;; TODO: GREEN - TEMPORARY DEBUGGING
 
-	banksel _counter
-	clrf (_counter + 0)
-	clrf (_counter + 1)
-	clrf (_counter + 2)
-
-_loop:
+_pollingLoop:
 	clrwdt
-
-	banksel _counter
-	movf (_counter + 0), W
-	xorlw 0x40
-	btfss STATUS, Z
-	bra _incrementAndLoop
-
-	movf (_counter + 1), W
-	xorlw 0x42
-	btfss STATUS, Z
-	bra _incrementAndLoop
-
-	movf (_counter + 2), W
-	xorlw 0x0f
-	btfss STATUS, Z
-	bra _incrementAndLoop
-
-	clrf (_counter + 0)
-	clrf (_counter + 1)
-	clrf (_counter + 2)
+	banksel CLCDATA
+	movf CLCDATA, W
 
 	banksel LATC
-	movlw 1 << 6
-	xorwf LATC, F
+	movf _txUnreadCount, W
+	btfsc STATUS, Z
+	bcf LATC, 5 ;;;;;;;; TODO: RED - TEMPORARY DEBUGGING
+	bra _pollingLoop
 
-	bra _loop
 
-_incrementAndLoop:
-	incfsz (_counter + 0), F
-	bra _loop
+_temporaryDebugging:
+	; TODO: FIGURE OUT A WAY TO WAIT FOR THE 80us AFTER INITIALISATION (AND AFTER EACH FRAME) TO KEEP THE CLC1OUT LOW TO RESET THE LEDS
+	banksel _temp1
+	clrf _temp1
+	movlw 0xfc
+	movwf _temp2
+_xxx:
+	incfsz _temp1, F
+	bra _xxx
+	incfsz _temp2, F
+	bra _xxx
 
-	incfsz (_counter + 1), F
-	bra _loop
+	movlw 2
+	movwf _temp1
 
-	incf (_counter + 2), F
-	bra _loop
+_shiftThreeLeds:
+	movlw 0xff
+	movwi FSR1++
+	movlw 0
+	movwi FSR1++
+	movwi FSR1++
+
+	movlw 0
+	movwi FSR1++
+	movlw 0xff
+	movwi FSR1++
+	movlw 0
+	movwi FSR1++
+
+	movlw 0
+	movwi FSR1++
+	movwi FSR1++
+	movlw 0xff
+	movwi FSR1++
+
+	decfsz _temp1, F
+	bra _shiftThreeLeds
+
+	extern _txUnreadCount
+	movlw 18
+	movwf _txUnreadCount
+
+	banksel CLC2POL
+	bsf CLC2POL, LC2G2POL ; data
+
+	banksel TX1REG
+	clrf TX1REG
+
+	banksel T2CON
+	clrf TMR2
+	bsf T2CON, EN
+
+	banksel PIE3
+	bsf PIE3, TX1IE
+
+	return
 
 	end
