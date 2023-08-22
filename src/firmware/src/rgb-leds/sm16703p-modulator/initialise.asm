@@ -1,0 +1,36 @@
+	#define __NEED_INITIALISATION_EXTERNS
+	#include "sm16703p-modulator.inc"
+
+	radix decimal
+
+.sm16703pmodulator code
+	global sm16703pModulatorInitialise
+
+sm16703pModulatorInitialise:
+	pagesel sm16703pModulatorInitialiseUart1
+	call sm16703pModulatorInitialiseUart1
+
+	pagesel sm16703pModulatorInitialiseClc4AsUart1DtRegisterClockedByLongPwm
+	call sm16703pModulatorInitialiseClc4AsUart1DtRegisterClockedByLongPwm
+
+	pagesel sm16703pModulatorInitialiseClc3AsMuxOfLongAndShortPwmsGatedByClc4
+	call sm16703pModulatorInitialiseClc3AsMuxOfLongAndShortPwmsGatedByClc4
+
+	pagesel sm16703pModulatorInitialiseClc2AsByteSynchronisedReset
+	call sm16703pModulatorInitialiseClc2AsByteSynchronisedReset
+
+	pagesel sm16703pModulatorInitialiseClc1AsModulatedOutput
+	call sm16703pModulatorInitialiseClc1AsModulatedOutput
+
+	pagesel sm16703pModulatorInitialisePwm3AsLongDutyCycleForOnes
+	call sm16703pModulatorInitialisePwm3AsLongDutyCycleForOnes
+
+	pagesel sm16703pModulatorInitialisePwm4AsShortDutyCycleForZeroes
+	call sm16703pModulatorInitialisePwm4AsShortDutyCycleForZeroes
+
+	pagesel sm16703pModulatorInitialiseTimer2ForPwm
+	call sm16703pModulatorInitialiseTimer2ForPwm
+
+	return
+
+	end
