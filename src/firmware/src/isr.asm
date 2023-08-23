@@ -1,16 +1,20 @@
-	radix decimal
-
+	#include "isr.inc"
 	#include "mcu.inc"
 
+	radix decimal
+
 .isrSharedData udata
-	global _txUnreadCount ;;;;;;;; TODO: ENCAPSULATE THIS BETTER - MACRO ?
+	global _txUnreadCount
 
 _txReadPtrLow res 1
 _txUnreadCount res 1
 
 .isrTxBuffer udata
+	global _txBufferStart
+	global _txBufferEnd
+
 _txBufferStart res 1
-	res 26 * 3 - 2
+	res RGBLEDS_NUMBER_OF_BYTES_IN_TX_BUFFER - 2
 _txBufferEnd res 1
 _txBufferPastEnd:
 
@@ -43,15 +47,15 @@ _tx1ReadFromCircularBuffer:
 	movwf TX1REG
 
 _tx1WrapAndStoreCircularBufferReadPtr:
-	banksel _txReadPtrLow
 	movlw low(_txBufferEnd) + 1
 	xorwf FSR1L, W
 	movlw low(_txBufferStart)
 	btfsc STATUS, Z
-	movwf FSR1L ; _txReadPtrLow == _txBufferEnd, so reset the pointer to one byte before _txBufferStart
+	movwf FSR1L ; _txReadPtrLow == _txBufferEnd, so reset the pointer to _txBufferStart
 
 _tx1ReadFromCircularBufferCompleted:
 	movf FSR1L, W
+	banksel _txReadPtrLow
 	movwf _txReadPtrLow
 	retfie
 
@@ -65,7 +69,6 @@ _tx1BufferEmpty:
 
 
 isrTxBufferReset:
-	; TODO: ASSERTION THAT end - start is not more than 255 bytes
 	banksel _txUnreadCount
 	clrf _txUnreadCount
 

@@ -1,11 +1,14 @@
-	#include "mcu.inc"                            ;;;;;;; TODO: TEMPORARY DEBUGGING !
 	#include "initialise.inc"
+
+	#include "mcu.inc"                            ;;;;;;; TODO: TEMPORARY DEBUGGING !
+	#include "rgb-leds.inc"                       ;;;;;;; TODO: TEMPORARY DEBUGGING !
 
 	radix decimal
 
 .TODO_TEMPORARY udata
 _temp1 res 1
 _temp2 res 1
+_ledBuf res 9
 
 .main code
 	global main
@@ -13,6 +16,7 @@ _temp2 res 1
 main:
 	pagesel initialise
 	call initialise
+	clrwdt
 
 	banksel INTCON
 	bsf INTCON, PEIE
@@ -38,6 +42,7 @@ _pollingLoop:
 	movf CLCDATA, W
 
 	banksel LATC
+	extern _txUnreadCount
 	movf _txUnreadCount, W
 	btfsc STATUS, Z
 	bcf LATC, 5 ;;;;;;;; TODO: RED - TEMPORARY DEBUGGING
@@ -59,45 +64,29 @@ _xxx:
 	movlw 2
 	movwf _temp1
 
-_shiftThreeLeds:
-	movlw 0xff
-	movwi FSR1++
-	movlw 0
-	movwi FSR1++
-	movwi FSR1++
+_populateFrameBufferWithSomePixels:
+	movlw low(_ledBuf)
+	movwf FSR0L
+	movlw high(_ledBuf)
+	movwf FSR0H
 
-	movlw 0
-	movwi FSR1++
-	movlw 0xff
-	movwi FSR1++
-	movlw 0
-	movwi FSR1++
+	banksel _ledBuf
+	movlw 0xff ; needs reversing - remember UART is LSb first !
+	movwf (_ledBuf + 0)
+	movwf (_ledBuf + 1)
+	movwf (_ledBuf + 2)
 
-	movlw 0
-	movwi FSR1++
-	movwi FSR1++
-	movlw 0xff
-	movwi FSR1++
+	movlw 0x55 ; needs reversing - remember UART is LSb first !
+	movwf (_ledBuf + 3)
+	movwf (_ledBuf + 4)
+	movwf (_ledBuf + 5)
 
-	decfsz _temp1, F
-	bra _shiftThreeLeds
+	pagesel rgbLedsTryPutNextPixel
+	call rgbLedsTryPutNextPixel
+	call rgbLedsTryPutNextPixel
 
-	extern _txUnreadCount
-	movlw 1
-	movwf _txUnreadCount
-
-	banksel TX1REG
-	clrf TX1REG
-
-	banksel T2CON
-	clrf TMR2
-	bsf T2CON, EN
-
-	banksel CLC2POL
-	bsf CLC2POL, LC2G2POL ; data
-
-	banksel PIE3
-	bsf PIE3, TX1IE
+	pagesel rgbLedsStartFrame
+	call rgbLedsStartFrame
 
 	return
 

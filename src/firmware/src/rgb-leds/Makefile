@@ -1,8 +1,10 @@
 LIB_FILENAME=../rgb-leds.a
 
 OBJ_FILES=\
+	initialise.o \
 	sm16703p-modulator.a \
-	initialise.o
+	start-frame.o \
+	try-put-next-pixel.o
 
 all: $(LIB_FILENAME)
 

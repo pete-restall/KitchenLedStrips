@@ -4,5 +4,7 @@
 	radix decimal
 
 	extern rgbLedsInitialise
+	extern rgbLedsTryPutNextPixel
+	extern rgbLedsStartFrame
 
 	#endif
