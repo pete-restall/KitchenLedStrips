@@ -18,7 +18,7 @@ _initialiseClc4AsUart1DtRegisterClockedByLongPwm:
 	movwf CLC4SEL1
 
 	clrf CLC4GLS0
-	bsf CLC4GLS0, LC4G1D2N ; clock
+	bsf CLC4GLS0, LC4G1D2T ; clock
 
 	clrf CLC4GLS1
 	bsf CLC4GLS1, LC4G2D1T ; data

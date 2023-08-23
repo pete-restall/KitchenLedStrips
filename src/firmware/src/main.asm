@@ -83,11 +83,8 @@ _shiftThreeLeds:
 	bra _shiftThreeLeds
 
 	extern _txUnreadCount
-	movlw 18
+	movlw 1
 	movwf _txUnreadCount
-
-	banksel CLC2POL
-	bsf CLC2POL, LC2G2POL ; data
 
 	banksel TX1REG
 	clrf TX1REG
@@ -95,6 +92,9 @@ _shiftThreeLeds:
 	banksel T2CON
 	clrf TMR2
 	bsf T2CON, EN
+
+	banksel CLC2POL
+	bsf CLC2POL, LC2G2POL ; data
 
 	banksel PIE3
 	bsf PIE3, TX1IE
