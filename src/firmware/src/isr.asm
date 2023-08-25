@@ -3,6 +3,8 @@
 
 	radix decimal
 
+	constrainedToMcuInstructionFrequencyHz 8000000 ; Timing-sensitive code
+
 .isrSharedData udata
 	global _txUnreadCount
 

@@ -71,7 +71,7 @@ _populateFrameBufferWithSomePixels:
 	movwf FSR0H
 
 	banksel _ledBuf
-	movlw 0xff ; needs reversing - remember UART is LSb first !
+	movlw 0xaa ; needs reversing - remember UART is LSb first !
 	movwf (_ledBuf + 0)
 	movwf (_ledBuf + 1)
 	movwf (_ledBuf + 2)

@@ -2,12 +2,15 @@
 
 	radix decimal
 
+	constrainedToMcuInstructionFrequencyHz 8000000 ; Timing-sensitive code
+
 .rgbleds code
 	global rgbLedsStartFrame
 
 ;
 ; Start frame transmission.  Once started, the circular buffer must not be allowed to empty until all LEDs have been addressed.
 ; At 8MIPS and an LED baud of 800kbps, there are 80 instructions between colour components (bytes) needing to be transmitted.
+; One bit thus takes 10 instructions.
 ;
 rgbLedsStartFrame:
 _transmitDummyByteToAllowIsrAndClcPrimingTime:
@@ -17,6 +20,11 @@ _transmitDummyByteToAllowIsrAndClcPrimingTime:
 _enablePwmChannelsForUartBitModulation:
 	banksel T2CON
 	clrf TMR2
+
+_burn9CyclesToCompensateForPrescaledTimer2IntoClc2ResetRegisterBeingOneBitBehindPlusSettlingTimeForUartBitOnRisingEdge:
+	movlw 3
+	decfsz WREG, W
+	bra $ - 1
 	bsf T2CON, EN
 
 _releaseResetOnNextByteBoundary:
@@ -25,7 +33,7 @@ _releaseResetOnNextByteBoundary:
 
 _enableCircularBufferTransmission:
 	banksel PIE3
-	bsf PIE3, TX1IE ; TODO !  WE SEEM TO BE STARTING ONE BIT TOO EARLY AGAIN, AND SENDING THE LAST BIT OF THE DUMMY BYTE
+	bsf PIE3, TX1IE
 
 	return
 

@@ -3,8 +3,7 @@ LIB_FILENAME=../sm16703p-modulator.a
 OBJ_FILES=\
 	clc1-modulated-output.o \
 	clc2-byte-sync-reset.o \
-	clc3-mux.o \
-	clc4-tx-register.o \
+	clc3-tx-register.o \
 	initialise.o \
 	pwm3-long-duty-cycle-1.o \
 	pwm4-short-duty-cycle-0.o \
