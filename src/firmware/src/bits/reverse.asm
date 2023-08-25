@@ -2,7 +2,7 @@
 
 	radix decimal
 
-.bitsreverse code
+.bits code
 	global bitsReverseByte
 
 ;
@@ -13,15 +13,15 @@
 ;   A 128-byte (7-bit) look-up is performed to reverse the lowest 7 bits; the bits are returned in the MSbs as 1234567_
 ;   The carry from the previous right-shift (bit 0) is rotated back into bit 7, leaving 01234567.
 ;
-; A 256-byte look-up table is faster and executes in 4 cycles but uses almost twice as much flash.  This hybrid takes 10 cycles.
+; A 256-byte look-up table is faster and executes in 4 cycles but uses almost twice as much flash as this hybrid at 10 cycles.
 ;
 bitsReverseByte:
 	lsrf WREG, W
-	call reversedSeven
+	call _reversedSeven
 	rrf WREG, W
 	return
 
-reversedSeven:
+_reversedSeven:
 	brw
 	retlw b'00000000'
 	retlw b'10000000'

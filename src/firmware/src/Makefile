@@ -4,7 +4,7 @@ export FIRMWARE_VERSION="v0.1.0 ($(DATE_YYYYMMDD))"
 HEX_FILENAME=kitchen-led-strips.hex
 
 OBJ_FILES=\
-	bits-reverse.o \
+	bits.a \
 	boot.o \
 	config-words.o \
 	initialise.o \
@@ -12,7 +12,8 @@ OBJ_FILES=\
 	main.o \
 	pins.o \
 	power-management.o \
-	rgb-leds.a
+	rgb-leds.a \
+	working-registers.o
 
 all: $(HEX_FILENAME)
 
@@ -21,6 +22,7 @@ install: all
 
 clean:
 	$(RM) -f $(BUILD_ARTEFACT_PATTERN)
+	$(MAKE) -C bits clean
 	$(MAKE) -C rgb-leds clean
 
 $(HEX_FILENAME): $(OBJ_FILES)

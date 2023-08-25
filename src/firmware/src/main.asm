@@ -1,6 +1,7 @@
 	#include "initialise.inc"
 
 	#include "mcu.inc"                            ;;;;;;; TODO: TEMPORARY DEBUGGING !
+	#include "bits.inc"                           ;;;;;;; TODO: TEMPORARY DEBUGGING !
 	#include "rgb-leds.inc"                       ;;;;;;; TODO: TEMPORARY DEBUGGING !
 
 	radix decimal
@@ -30,10 +31,12 @@ main:
 	pagesel _temporaryDebugging
 	call _temporaryDebugging
 
-	banksel T2CON
-	movf T2CON, W
+	movlw 0xff
+	pagesel bitsSetCount
+	call bitsSetCount
 	banksel LATC
-	btfsc WREG, EN
+	xorlw 8
+	btfsc STATUS, Z
 	bcf LATC, 4 ;;;;;;;; TODO: GREEN - TEMPORARY DEBUGGING
 
 _pollingLoop:
@@ -71,12 +74,16 @@ _populateFrameBufferWithSomePixels:
 	movwf FSR0H
 
 	banksel _ledBuf
-	movlw 0xaa ; needs reversing - remember UART is LSb first !
+	movlw 0xaa
+	pagesel bitsReverseByte
+	call bitsReverseByte
 	movwf (_ledBuf + 0)
 	movwf (_ledBuf + 1)
 	movwf (_ledBuf + 2)
 
-	movlw 0x55 ; needs reversing - remember UART is LSb first !
+	movlw 0x55
+	pagesel bitsReverseByte
+	call bitsReverseByte
 	movwf (_ledBuf + 3)
 	movwf (_ledBuf + 4)
 	movwf (_ledBuf + 5)

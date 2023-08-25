@@ -166,6 +166,7 @@ DATABANK   NAME=animationBuffer4   START=0x0220   END=0x026F
 DATABANK   NAME=animationBuffer5   START=0x02A0   END=0x02EF
 DATABANK   NAME=animationBuffer6   START=0x0320   END=0x033F
 
+SECTION    NAME=.workingRegisters  RAM=gprnobank
 SECTION    NAME=.isrSharedData     RAM=gprnobank
 SECTION    NAME=.animationBuffer0  RAM=animationBuffer0
 SECTION    NAME=.animationBuffer1  RAM=animationBuffer1
