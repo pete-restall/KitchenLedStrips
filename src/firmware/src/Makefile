@@ -4,6 +4,7 @@ export FIRMWARE_VERSION="v0.1.0 ($(DATE_YYYYMMDD))"
 HEX_FILENAME=kitchen-led-strips.hex
 
 OBJ_FILES=\
+	bits-reverse.o \
 	boot.o \
 	config-words.o \
 	initialise.o \
