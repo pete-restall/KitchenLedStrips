@@ -1,6 +1,7 @@
 LIB_FILENAME=../rgb-leds.a
 
 OBJ_FILES=\
+	udata-buffers.o \
 	initialise.o \
 	sm16703p-modulator.a \
 	start-frame.o \
