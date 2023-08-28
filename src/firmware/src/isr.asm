@@ -15,6 +15,10 @@ _txUnreadCount res 1
 	global _txBufferStart
 	global _txBufferEnd
 
+	#if (RGBLEDS_NUMBER_OF_BYTES_IN_TX_BUFFER > 255)
+		error "The ISR is written in such a way that the circular buffer must not exceed 255 bytes; this simplifies bounds checking."
+	#endif
+
 _txBufferStart res 1
 	res RGBLEDS_NUMBER_OF_BYTES_IN_TX_BUFFER - 2
 _txBufferEnd res 1
