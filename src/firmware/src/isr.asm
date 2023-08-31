@@ -14,6 +14,7 @@ _txUnreadCount res 1
 .isrTxBuffer udata
 	global _txBufferStart
 	global _txBufferEnd
+	global _txBufferPastEnd
 
 	#if (RGBLEDS_NUMBER_OF_BYTES_IN_TX_BUFFER > 255)
 		error "The ISR is written in such a way that the circular buffer must not exceed 255 bytes; this simplifies bounds checking."
@@ -53,15 +54,15 @@ _tx1ReadFromCircularBuffer:
 	movwf TX1REG
 
 _tx1WrapAndStoreCircularBufferReadPtr:
-	movlw low(_txBufferEnd) + 1
+	movlw low(_txBufferPastEnd)
 	xorwf FSR1L, W
 	movlw low(_txBufferStart)
 	btfsc STATUS, Z
-	movwf FSR1L ; _txReadPtrLow == _txBufferEnd, so reset the pointer to _txBufferStart
+	movwf FSR1L ; _txReadPtrLow == _txBufferPastEnd, so reset the pointer to _txBufferStart
 
 _tx1ReadFromCircularBufferCompleted:
-	movf FSR1L, W
 	banksel _txReadPtrLow
+	movf FSR1L, W
 	movwf _txReadPtrLow
 	retfie
 
