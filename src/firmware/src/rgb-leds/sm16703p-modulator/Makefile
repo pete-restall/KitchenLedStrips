@@ -8,6 +8,7 @@ OBJ_FILES=\
 	pwm3-long-duty-cycle-1.o \
 	pwm4-short-duty-cycle-0.o \
 	tmr2-pwm-timebase.o \
+	try-start-frame.o \
 	uart1.o
 
 all: $(LIB_FILENAME)

@@ -4,8 +4,10 @@
 	radix decimal
 
 .sm16703pmodulator code
+	global rgbLedsModulatorInitialise
 	global sm16703pModulatorInitialise
 
+rgbLedsModulatorInitialise:
 sm16703pModulatorInitialise:
 	pagesel sm16703pModulatorInitialiseUart1
 	call sm16703pModulatorInitialiseUart1

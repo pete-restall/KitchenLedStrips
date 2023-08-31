@@ -4,6 +4,7 @@
 
 .powermanagement code
 	global powerManagementInitialise
+	global powerManagementSleep
 
 powerManagementInitialise:
 	banksel PMD0
@@ -25,6 +26,21 @@ powerManagementInitialise:
 	movlw 0xff
 	movwf PMD5
 
+	return
+
+
+powerManagementSleep:
+	; TODO: Needs writing properly - perhaps the low-current regulator (or off entirely), do not sleep if certain peripherals still running, etc.
+	banksel TX1STA
+	btfss TX1STA, TRMT
+	bra _doneSleeping
+
+	banksel PORTA ; TODO: NOT A RELIABLE TEST SINCE THE LAST BIT TRANSMITTED COULD BE A 0...
+	btfss PORTA, 0
+	sleep
+	nop
+
+_doneSleeping:
 	return
 
 	end

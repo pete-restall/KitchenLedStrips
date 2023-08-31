@@ -1,5 +1,5 @@
+	#include "frame-buffer.inc"
 	#include "rgb-leds.inc"
-	#include "sm16703p-modulator.inc"
 
 	radix decimal
 
@@ -12,8 +12,11 @@ rgbLedsInitialise:
 	pagesel isrTxBufferReset
 	call isrTxBufferReset
 
-	pagesel sm16703pModulatorInitialise
-	call sm16703pModulatorInitialise
+	pagesel rgbLedsModulatorInitialise
+	call rgbLedsModulatorInitialise
+
+	pagesel frameBufferInitialise
+	call frameBufferInitialise
 
 	return
 

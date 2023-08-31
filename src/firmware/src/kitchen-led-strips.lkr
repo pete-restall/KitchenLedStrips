@@ -179,8 +179,14 @@ DATABANK   NAME=animationBuffer4   START=0x0220   END=0x026F
 DATABANK   NAME=animationBuffer5   START=0x02A0   END=0x02EF
 DATABANK   NAME=animationBuffer6   START=0x0320   END=0x033F
 
+DATABANK   NAME=frameBuffer0       START=0x03A0   END=0x03EF
+DATABANK   NAME=frameBuffer1       START=0x0420   END=0x046F
+DATABANK   NAME=frameBuffer2       START=0x04A0   END=0x04EF
+DATABANK   NAME=frameBuffer3       START=0x0520   END=0x052F
+
 SECTION    NAME=.workingRegisters  RAM=gprnobank
 SECTION    NAME=.isrSharedData     RAM=gprnobank
+
 SECTION    NAME=.animationBuffer0  RAM=animationBuffer0
 SECTION    NAME=.animationBuffer1  RAM=animationBuffer1
 SECTION    NAME=.animationBuffer2  RAM=animationBuffer2
@@ -188,3 +194,8 @@ SECTION    NAME=.animationBuffer3  RAM=animationBuffer3
 SECTION    NAME=.animationBuffer4  RAM=animationBuffer4
 SECTION    NAME=.animationBuffer5  RAM=animationBuffer5
 SECTION    NAME=.animationBuffer6  RAM=animationBuffer6
+
+SECTION    NAME=.frameBuffer0      RAM=frameBuffer0
+SECTION    NAME=.frameBuffer1      RAM=frameBuffer1
+SECTION    NAME=.frameBuffer2      RAM=frameBuffer2
+SECTION    NAME=.frameBuffer3      RAM=frameBuffer3

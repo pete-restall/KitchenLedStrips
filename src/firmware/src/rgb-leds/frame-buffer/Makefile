@@ -1,19 +1,15 @@
-LIB_FILENAME=../rgb-leds.a
+LIB_FILENAME=../frame-buffer.a
 
 OBJ_FILES=\
-	frame-buffer.a \
 	initialise.o \
-	poll.o \
-	sm16703p-modulator.a \
-	try-put-next-pixel-into-tx.o \
-	udata-buffers.o
+	try-blit.o \
+	udata-buffers.o \
+	udata-state.o
 
 all: $(LIB_FILENAME)
 
 clean:
 	$(RM) -f $(BUILD_ARTEFACT_PATTERN)
-	$(MAKE) -C frame-buffer clean
-	$(MAKE) -C sm16703p-modulator clean
 
 $(LIB_FILENAME): $(OBJ_FILES)
 	$(GPLIB_MERGE) $(LIB_FILENAME) $(OBJ_FILES)

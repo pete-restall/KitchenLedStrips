@@ -4,5 +4,6 @@
 	radix decimal
 
 	extern powerManagementInitialise
+	extern powerManagementSleep
 
 	#endif
