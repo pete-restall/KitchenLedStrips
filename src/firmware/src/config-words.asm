@@ -18,7 +18,7 @@
 	config WDTE=NSLEEP
 	config WDTCCS=HFINTOSC
 	config WDTCWS=WDTCWS_6
-	config WDTCPS=WDTCPS_4
+	config WDTCPS=WDTCPS_3
 	config BBEN=OFF
 	config SAFEN=ON
 	config WRTAPP=ON
