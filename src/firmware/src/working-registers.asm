@@ -1,6 +1,6 @@
 	radix decimal
 
-.workingRegisters code
+.workingRegisters udata
 	global workingA
 	global workingB
 	global workingC
