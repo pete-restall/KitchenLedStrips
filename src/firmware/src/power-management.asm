@@ -2,6 +2,8 @@
 
 	radix decimal
 
+_CLCDATA_TX_HELD_IN_RESET_AND_PORT_LATCHED_LOW equ (1 << MLC2OUT) | (1 << MLC1OUT)
+
 .powermanagement code
 	global powerManagementInitialise
 	global powerManagementSleep
@@ -30,14 +32,26 @@ powerManagementInitialise:
 
 
 powerManagementSleep:
-	; TODO: Needs writing properly - perhaps the low-current regulator (or off entirely), do not sleep if certain peripherals still running, etc.
-	banksel TX1STA
-	btfss TX1STA, TRMT
-	bra _doneSleeping
+	clrw
 
-	banksel PORTA ; TODO: NOT A RELIABLE TEST SINCE THE LAST BIT TRANSMITTED COULD BE A 0...
-	btfss PORTA, 0
-	sleep
+_timer2UsagePrecludesSleep:
+	banksel T2CON
+	btfsc T2CON, EN
+	iorlw 1 << IDLEN
+
+_timer0UsagePrecludesSleep:
+	banksel T0CON0
+	btfsc T0CON0, EN
+	iorlw 1 << IDLEN
+
+_setSleepOrIdleDependingOnPeripheralUse:
+	banksel CPUDOZE
+	bcf CPUDOZE, IDLEN
+	bcf CPUDOZE, DOZEN
+	iorwf CPUDOZE, F
+
+; TODO: SEEMS TO STOP EVERYTHING WORKING - FIX THIS
+;	sleep
 	nop
 
 _doneSleeping:

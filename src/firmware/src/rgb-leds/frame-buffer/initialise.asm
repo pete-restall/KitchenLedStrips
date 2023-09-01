@@ -11,14 +11,12 @@ _FSR_LINEAR_ACCESS_HIGH equ 0x20
 frameBufferInitialise:
 	banksel _frameBufferFlags
 	clrf _frameBufferFlags
-	bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_FRAMESYNC_BLIT
 
-	movlw 0x30 ;low(_frameBufferStart)
+	movlw low(_frameBufferLinearStart)
 	movwf _frameBufferDisplayPtrLow
-	movlw 0x22 ;high(_frameBufferStart) ; TODO: LINEAR ADDRESSING FORMULA NEEDS TO BE WORKED OUT, UNLESS WE DEFINE SOME OVERLAPPING LABELS IN A LINEAR SECTION AS WELL
-	iorlw _FSR_LINEAR_ACCESS_HIGH
+	movlw high(_frameBufferLinearStart)
 	movwf _frameBufferDisplayPtrHigh
-	movlw 0x36 ; low(_frameBufferPastEnd) ; TODO: requires adjustment depending on the number of LEDs in the strip
+	movlw low(_frameBufferLinearStart) + 6 ; low(_frameBufferPastEnd) ; TODO: requires adjustment depending on the number of LEDs in the strip
 	movwf _frameBufferDisplayPtrLowPastEnd
 
 ; TODO: ******** START OF TEMPORARY DEBUGGING - SET UP A SIMPLE DISPLAY FRAME ********
@@ -33,9 +31,9 @@ frameBufferInitialise:
 	movlw 0x08
 	movwf _frameBufferStart + 3
 
-	movlw 0x00
+	movlw 0x30
 	movwf _frameBufferStart + 4
-	movlw 0xf2
+	movlw 0x08
 	movwf _frameBufferStart + 5
 
 ; TODO: ******** END OF TEMPORARY DEBUGGING ********

@@ -5,6 +5,7 @@ OBJ_FILES=\
 	initialise.o \
 	poll.o \
 	sm16703p-modulator.a \
+	tmr0-frame-sync.o \
 	try-put-next-pixel-into-tx.o \
 	udata-buffers.o
 

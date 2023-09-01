@@ -88,11 +88,17 @@ _updateFrameBufferPointerToNextPixel:
 	btfsc STATUS, C
 	incf _frameBufferDisplayPtrHigh, F
 
-_tryBlittingAnotherPixel:
+_tryBlittingAnotherPixelIfNotOverrunTheFrameBuffer:
 	movf _frameBufferDisplayPtrLowPastEnd, W
 	xorwf _frameBufferDisplayPtrLow, W
 	btfss STATUS, Z
 	bra _unpackCurrentFrameBufferPixel
+
+_resetFrameBufferPointerToStartOfBuffer:
+	movlw low(_frameBufferLinearStart)
+	movwf _frameBufferDisplayPtrLow
+	movlw high(_frameBufferLinearStart)
+	movwf _frameBufferDisplayPtrHigh
 
 _flagThatBlittingHasCompletedForThisFrame:
 	movlw (1 << _FRAME_BUFFER_FLAG_FRAMESYNC_BLIT)
@@ -103,6 +109,35 @@ _flagThatBlittingHasCompletedForThisFrame:
 _gammaCorrection:
 	andlw b'00011111'
 	brw
+ ; TODO: TEMPORARY DEBUGGING - EVEN WITH TWO LEVELS, THE LEDS FLICKER WHEN UPDATING TO THE SAME VALUE AT 32FPS.  SUSPECT THE BREADBOARD DECOUPLING, MORE INVESTIGATION REQUIRED.
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0x00
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
+ retlw 0xff
 	retlw b'00000000'
 	retlw b'00000000'
 	retlw b'10000000'

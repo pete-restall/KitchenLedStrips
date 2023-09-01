@@ -18,6 +18,9 @@ rgbLedsInitialise:
 	pagesel frameBufferInitialise
 	call frameBufferInitialise
 
+	pagesel frameSyncTimerInitialise
+	call frameSyncTimerInitialise
+
 	return
 
 	end

@@ -19,6 +19,10 @@ _FRAME_BUFFER_FLAG_FRAMESYNC_BLIT equ 1
 	extern _frameBufferStart
 	extern _frameBufferEnd
 	extern _frameBufferPastEnd
+
+	extern _frameBufferLinearStart
+	extern _frameBufferLinearEnd
+	extern _frameBufferLinearPastEnd
 	#endif
 
 	#ifndef __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_UDATASTATE_ASM

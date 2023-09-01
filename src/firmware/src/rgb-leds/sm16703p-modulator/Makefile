@@ -5,6 +5,7 @@ OBJ_FILES=\
 	clc2-byte-sync-reset.o \
 	clc3-tx-register.o \
 	initialise.o \
+	is-busy.o \
 	pwm3-long-duty-cycle-1.o \
 	pwm4-short-duty-cycle-0.o \
 	tmr2-pwm-timebase.o \

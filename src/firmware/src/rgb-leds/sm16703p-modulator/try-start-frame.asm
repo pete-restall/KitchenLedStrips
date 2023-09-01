@@ -4,7 +4,7 @@
 
 	constrainedToMcuInstructionFrequencyHz 8000000 ; Timing-sensitive code
 
-.rgbleds code
+.sm16703pmodulator code
 	global rgbLedsModulatorTryStartFrame
 	global sm16703pModulatorTryStartFrame
 
@@ -18,8 +18,8 @@
 rgbLedsModulatorTryStartFrame:
 sm16703pModulatorTryStartFrame:
 _ensureFrameNotInProgress:
-	banksel TX1STA
-	btfss TX1STA, TRMT
+	banksel T2CON
+	btfsc T2CON, EN
 	retlw 0
 
 _transmitDummyByteToAllowIsrAndClcPrimingTime:
