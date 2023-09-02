@@ -1,11 +1,16 @@
-%.o: %.asm
-	$(AS) $(ASARGS) -o $@ $<
+PP_SED=sed "s/{{FIRMWARE_VERSION}}/$(FIRMWARE_VERSION)/g"
 
-%.pp.o: %.asm
-	cat $< | sed "s/{{FIRMWARE_VER}}/$(FIRMWARE_VERSION)/g" > "`basename $< .asm`.pp.asm"
-	$(AS) $(ASARGS) -o $@ "`basename $< .asm`.pp.asm"
+%.pp.o: %.pp.asm
+	cat "$<" | $(PP_SED) > "`basename "$@" .pp.o`".asm
+	$(AS) $(ASARGS) -o "$@" "`basename "$@" .pp.o`".asm
+
+%.o: %.asm
+	$(AS) $(ASARGS) -o "$@" "$<"
+
+%.inc: %.pp.inc
+	cat "$<" | $(PP_SED) > "$@"
 
 %.a: FORCE
-	$(MAKE) -C `basename $@ .a` all
+	$(MAKE) -C `basename "$@" .a` all
 
 FORCE:
