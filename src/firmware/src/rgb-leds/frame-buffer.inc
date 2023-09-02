@@ -4,6 +4,7 @@
 	radix decimal
 
 	extern frameBufferInitialise
+	extern frameBufferClear
 	extern frameBufferTryBlit
 	extern frameBufferTryStartFrame
 

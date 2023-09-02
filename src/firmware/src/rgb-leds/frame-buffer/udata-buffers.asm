@@ -3,6 +3,10 @@
 
 	radix decimal
 
+	#if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER != 256)
+		error "The frame-buffer must be 256 bytes (128 pixels of 2 bytes each; 5-bit RGB components)."
+	#endif
+
 .frameBuffer0 udata
 	global _frameBufferStart ; 256-byte linear-access buffer
 _frameBufferStart res 80
@@ -26,7 +30,7 @@ _frameBufferPastEnd:
 	global _frameBufferLinearEnd
 	global _frameBufferLinearPastEnd
 _frameBufferLinearStart res 1
-	res 254
+	res _NUMBER_OF_BYTES_IN_FRAMEBUFFER - 2
 _frameBufferLinearEnd res 1
 _frameBufferLinearPastEnd:
 

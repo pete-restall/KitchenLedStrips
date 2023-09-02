@@ -1,6 +1,7 @@
 LIB_FILENAME=../frame-buffer.a
 
 OBJ_FILES=\
+	clear.o \
 	initialise.o \
 	try-blit.o \
 	udata-buffers.o \
