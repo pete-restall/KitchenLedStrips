@@ -36,7 +36,7 @@ _waitForFrameSync:
 
 	; TODO: THIS IS TEMPORARY DEBUGGING
 	pagesel _TEMPORARY_DEBUGGING
-;	call _TEMPORARY_DEBUGGING
+	call _TEMPORARY_DEBUGGING
 
 _syncFrameBufferForBlitting:
 	banksel _frameBufferFlags
@@ -72,7 +72,7 @@ _TEMPORARY_DEBUGGING:
 	decfsz _frameCount, F
 	return
 
-	movlw 4
+	movlw 2
 	movwf _frameCount
 
 _throb:
