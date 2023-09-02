@@ -24,6 +24,8 @@ _ensureFrameNotInProgress:
 
 _transmitDummyByteToAllowIsrAndClcPrimingTime:
 	banksel TX1REG
+	bcf INTCON, GIE
+	movf SP1BRGH, F
 	clrf TX1REG
 
 _enablePwmChannelsForUartBitModulation:
@@ -43,6 +45,7 @@ _releaseResetOnNextByteBoundary:
 _enableCircularBufferTransmission:
 	banksel PIE3
 	bsf PIE3, TX1IE
+	bsf INTCON, GIE
 
 	retlw 1
 
