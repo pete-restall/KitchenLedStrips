@@ -3,35 +3,47 @@
 
 	radix decimal
 
-	#if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER != 256)
-		error "The frame-buffer must be 256 bytes (128 pixels of 2 bytes each; 5-bit RGB components)."
-	#endif
+	constrainedToFrameBufferOf256BytesOrLess
 
-.frameBuffer0 udata
-	global _frameBufferStart ; 256-byte linear-access buffer
+reserveFrameBufferBank macro bankNumber, numberOfBytes
+.frameBuffer#v(bankNumber) udata
+	if (bankNumber == 0)
+		global _frameBufferStart
+		if (numberOfBytes > 80)
 _frameBufferStart res 80
-
-.frameBuffer1 udata
-	res 80
-
-.frameBuffer2 udata
-	res 80
-
-.frameBuffer3 udata
-	global _frameBufferEnd
-	global _frameBufferPastEnd
-	res 15
+			reserveFrameBufferBank bankNumber + 1, numberOfBytes - 80
+		else
+			global _frameBufferStart
+			global _frameBufferEnd
+			global _frameBufferPastEnd
+_frameBufferStart res numberOfBytes - 1
 _frameBufferEnd res 1
 _frameBufferPastEnd:
+		endif
+	else
+		if (numberOfBytes > 80)
+			res 80
+			reserveFrameBufferBank bankNumber + 1, numberOfBytes - 80
+		else
+			global _frameBufferEnd
+			global _frameBufferPastEnd
+			res numberOfBytes - 1
+_frameBufferEnd res 1
+_frameBufferPastEnd:
+		endif
+	endif
 
+	endm
+
+	reserveFrameBufferBank 0, _NUMBER_OF_BYTES_IN_FRAMEBUFFER
 
 .frameBufferLinear udata
-	global _frameBufferLinearStart
-	global _frameBufferLinearEnd
-	global _frameBufferLinearPastEnd
-_frameBufferLinearStart res 1
+	global frameBufferLinearStart ; Up to 256-byte linear-access buffer
+	global frameBufferLinearEnd
+	global frameBufferLinearPastEnd
+frameBufferLinearStart res 1
 	res _NUMBER_OF_BYTES_IN_FRAMEBUFFER - 2
-_frameBufferLinearEnd res 1
-_frameBufferLinearPastEnd:
+frameBufferLinearEnd res 1
+frameBufferLinearPastEnd:
 
 	end

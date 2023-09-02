@@ -1,10 +1,11 @@
 	#ifndef __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_FRAMEBUFFER_INC
 	#define __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_FRAMEBUFFER_INC
 	#include "../../mcu.inc"
+	#include "../../config.inc"
 
 	radix decimal
 
-_NUMBER_OF_BYTES_IN_FRAMEBUFFER equ 128 * 2
+_NUMBER_OF_BYTES_IN_FRAMEBUFFER equ CONFIG_NUMBER_OF_PIXELS * 2
 
 _FRAME_BUFFER_FLAG_FRAMESYNC equ 0
 _FRAME_BUFFER_FLAG_FRAMESYNC_BLIT equ 1
@@ -19,6 +20,7 @@ _FRAME_BUFFER_FLAG_RGB_UNPACKED equ 2
 	#endif
 
 	#ifndef __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_TRYBLIT_ASM
+	extern frameBufferSyncAndTryBlit
 	extern frameBufferTryBlit
 	#endif
 
@@ -27,16 +29,29 @@ _FRAME_BUFFER_FLAG_RGB_UNPACKED equ 2
 	extern _frameBufferEnd
 	extern _frameBufferPastEnd
 
-	extern _frameBufferLinearStart
-	extern _frameBufferLinearEnd
-	extern _frameBufferLinearPastEnd
+	extern frameBufferLinearStart
+	extern frameBufferLinearEnd
+	extern frameBufferLinearPastEnd
 	#endif
 
 	#ifndef __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_UDATASTATE_ASM
 	extern _frameBufferFlags
 	extern _frameBufferDisplayPtrLow
 	extern _frameBufferDisplayPtrHigh
-	extern _frameBufferDisplayPtrLowPastEnd
 	#endif
+
+constrainedToFrameBufferOf256BytesOrLess macro
+	#if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER < 2)
+		error "The frame-buffer must be at least 2 bytes (1 pixel of 2 bytes each; 5-bit RGB components)."
+	#endif
+
+	#if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER % 2 != 0)
+		error "The frame-buffer must be a multiple of 2 bytes (1 pixel is 2 bytes consisting of 5-bit RGB components)."
+	#endif
+
+	#if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER > 256)
+		error "The frame-buffer must not be more than 256 bytes (128 pixels of 2 bytes each; 5-bit RGB components)."
+	#endif
+	endm
 
 	#endif

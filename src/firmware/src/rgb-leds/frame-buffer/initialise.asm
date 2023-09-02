@@ -11,18 +11,15 @@ frameBufferInitialise:
 	clrf _frameBufferFlags
 
 _initialiseFrameBufferPointers:
-	movlw low(_frameBufferLinearStart)
+	movlw low(frameBufferLinearStart)
 	movwf _frameBufferDisplayPtrLow
-	movlw high(_frameBufferLinearStart)
+	movlw high(frameBufferLinearStart)
 	movwf _frameBufferDisplayPtrHigh
-	movlw low(_frameBufferLinearStart) + 6 ; low(_frameBufferPastEnd) ; TODO: requires adjustment depending on the number of LEDs in the strip
-	movwf _frameBufferDisplayPtrLowPastEnd
 
 _referenceUnusedBankVariablesToPreventLinkerStrippingSymbolAndCorruptingTheMemoryMap:
 	movlw low(_frameBufferPastEnd)
 
 _clearFrameBuffer:
-	clrw
 	pagesel frameBufferClear
 	call frameBufferClear
 	return

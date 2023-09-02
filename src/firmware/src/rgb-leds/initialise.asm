@@ -21,6 +21,9 @@ rgbLedsInitialise:
 	pagesel frameSyncTimerInitialise
 	call frameSyncTimerInitialise
 
+	pagesel _rgbLedsNextPixelInitialise
+	call _rgbLedsNextPixelInitialise
+
 	return
 
 	end

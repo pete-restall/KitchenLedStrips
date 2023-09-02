@@ -6,4 +6,11 @@
 	extern rgbLedsInitialise
 	extern rgbLedsPoll
 
+	extern rgbLedsTryPutNextPixel
+	extern rgbLedsTryGetNextPixel
+	extern rgbLedsResetNextPixelPointer
+	extern rgbLedsPixelRed
+	extern rgbLedsPixelGreen
+	extern rgbLedsPixelBlue
+
 	#endif

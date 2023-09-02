@@ -7,6 +7,8 @@
 
 	radix decimal
 
+	constrainedToFrameBufferOf256BytesOrLess
+
 .framebufferUdata udata
 _unpackedRgb:
 _green res 1
@@ -14,7 +16,19 @@ _red res 1
 _blue res 1
 
 .framebuffer code
+	global frameBufferSyncAndTryBlit
 	global frameBufferTryBlit
+
+;
+; Synchronise and then try blitting the frame, or part of the frame; the LEDs' circular buffer will be filled as much as possible.
+;
+; Returns W=0 if there is still more to blit, W=1 if the entire frame has been blitted.
+;
+frameBufferSyncAndTryBlit:
+	banksel _frameBufferFlags
+	movlw (1 << _FRAME_BUFFER_FLAG_FRAMESYNC)
+	xorwf _frameBufferFlags, F
+
 
 ;
 ; Blit the frame, or part of the frame; the LEDs' circular buffer will be filled as much as possible.
@@ -95,15 +109,15 @@ _updateFrameBufferPointerToNextPixel:
 	incf _frameBufferDisplayPtrHigh, F
 
 _tryBlittingAnotherPixelIfNotOverrunTheFrameBuffer:
-	movf _frameBufferDisplayPtrLowPastEnd, W
+	movlw low(frameBufferLinearPastEnd)
 	xorwf _frameBufferDisplayPtrLow, W
 	btfss STATUS, Z
 	bra _unpackCurrentFrameBufferPixel
 
 _resetFrameBufferPointerToStartOfBuffer:
-	movlw low(_frameBufferLinearStart)
+	movlw low(frameBufferLinearStart)
 	movwf _frameBufferDisplayPtrLow
-	movlw high(_frameBufferLinearStart)
+	movlw high(frameBufferLinearStart)
 	movwf _frameBufferDisplayPtrHigh
 
 _flagThatBlittingHasCompletedForThisFrame:

@@ -5,7 +5,11 @@
 
 	extern frameBufferInitialise
 	extern frameBufferClear
+	extern frameBufferSyncAndTryBlit
 	extern frameBufferTryBlit
-	extern frameBufferTryStartFrame
+
+	extern frameBufferLinearStart
+	extern frameBufferLinearEnd
+	extern frameBufferLinearPastEnd
 
 	#endif

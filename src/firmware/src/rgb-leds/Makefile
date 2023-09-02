@@ -3,11 +3,12 @@ LIB_FILENAME=../rgb-leds.a
 OBJ_FILES=\
 	frame-buffer.a \
 	initialise.o \
+	next-pixel.o \
 	poll.o \
+	public-udata.o \
 	sm16703p-modulator.a \
 	tmr0-frame-sync.o \
-	try-put-next-pixel-into-tx.o \
-	udata-buffers.o
+	try-put-next-pixel-into-tx.o
 
 all: $(LIB_FILENAME)
 

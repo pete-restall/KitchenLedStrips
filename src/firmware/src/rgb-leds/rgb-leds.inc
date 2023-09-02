@@ -11,14 +11,21 @@
 	extern rgbLedsTryPutNextPixelIntoTransmissionBuffer
 	#endif
 
+	#ifndef __KITCHENLEDS_RGBLEDS_NEXTPIXEL_ASM
+	extern _rgbLedsNextPixelInitialise
+	extern rgbLedsTryPutNextPixel
+	extern rgbLedsTryGetNextPixel
+	extern rgbLedsResetNextPixelPointer
+	#endif
+
 	#ifndef __KITCHENLEDS_RGBLEDS_TMR0FRAMESYNC_ASM
 	extern frameSyncTimerInitialise
 	#endif
 
-	#ifndef __KITCHENLEDS_RGBLEDS_UDATABUFFERS_ASM
-	extern animationBufferStart
-	extern animationBufferEnd
-	extern animationBufferPastEnd
+	#ifndef __KITCHENLEDS_RGBLEDS_PUBLICUDATA_ASM
+	extern rgbLedsPixelRed
+	extern rgbLedsPixelGreen
+	extern rgbLedsPixelBlue
 	#endif
 
 	#endif
