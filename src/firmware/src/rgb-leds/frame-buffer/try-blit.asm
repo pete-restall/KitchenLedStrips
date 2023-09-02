@@ -116,10 +116,10 @@ _gammaCorrection:
 	andlw b'00011111'
 	brw
 	retlw b'00000000'
-	retlw b'00000000'
 	retlw b'10000000'
-	retlw b'10000000'
+	retlw b'01000000'
 	retlw b'11000000'
+	retlw b'00100000'
 	retlw b'10100000'
 	retlw b'11100000'
 	retlw b'01010000'
