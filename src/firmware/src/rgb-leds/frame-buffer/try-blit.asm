@@ -31,8 +31,13 @@ frameBufferTryBlit:
 	btfsc STATUS, Z
 	retlw 1
 
+_testIfUnpackingAlreadyDoneButThereWasNoSpaceInCircularBuffer:
+	btfsc _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
+	bra _tryPuttingUnpackedPixelIntoTransmissionBuffer
+
 _unpackCurrentFrameBufferPixel:
 _unpackMostSignificantNybblesFromCurrentFrameBufferPixel:
+	bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 	movf _frameBufferDisplayPtrLow, W
 	movwf FSR0L
 	movf _frameBufferDisplayPtrHigh, W
@@ -82,7 +87,8 @@ _tryPuttingUnpackedPixelIntoTransmissionBuffer:
 	retlw 0
 
 _updateFrameBufferPointerToNextPixel:
-	banksel _frameBufferDisplayPtrLow
+	banksel _frameBufferFlags
+	bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 	movlw 2
 	addwf _frameBufferDisplayPtrLow, F
 	btfsc STATUS, C
@@ -109,35 +115,6 @@ _flagThatBlittingHasCompletedForThisFrame:
 _gammaCorrection:
 	andlw b'00011111'
 	brw
- ; TODO: TEMPORARY DEBUGGING - EVEN WITH TWO LEVELS, THE LEDS FLICKER WHEN UPDATING TO THE SAME VALUE AT 32FPS.  SUSPECT THE BREADBOARD DECOUPLING, MORE INVESTIGATION REQUIRED.
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0x00
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
- retlw 0xff
 	retlw b'00000000'
 	retlw b'00000000'
 	retlw b'10000000'
