@@ -117,6 +117,33 @@ _updatePixel:
 	swapf WREG, W
 	iorwf _frameBufferStart + 0, F
 
+	banksel _throbValue
+	lsrf _throbValue, W
+	banksel _frameBufferStart ; RRRR GGGG  BBBB rgb_
+	bcf _frameBufferStart + 3, 2
+	btfsc STATUS, C
+	bsf _frameBufferStart + 3, 2
+	movlw 0xf0
+	andwf _frameBufferStart + 2, F
+	banksel _throbValue
+	lsrf _throbValue, W
+	banksel _frameBufferStart
+	iorwf _frameBufferStart + 2, F
+
+	banksel _throbValue
+	lsrf _throbValue, W
+	banksel _frameBufferStart ; RRRR GGGG  BBBB rgb_
+	bcf _frameBufferStart + 5, 1
+	btfsc STATUS, C
+	bsf _frameBufferStart + 5, 1
+	movlw 0x0f
+	andwf _frameBufferStart + 5, F
+	banksel _throbValue
+	lsrf _throbValue, W
+	banksel _frameBufferStart
+	swapf WREG, W
+	iorwf _frameBufferStart + 5, F
+
 	banksel LATC
 	movlw 1 << 5
 	xorwf LATC, F
