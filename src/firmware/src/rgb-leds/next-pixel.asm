@@ -82,11 +82,11 @@ _return0IfCurrentPixelPointerIsNowPastBufferEnd:
 ; Returns W=0 if the pointer was not loaded because it has gone beyond the end of the frame-buffer, W!=0 if successful.
 ;
 _loadCurrentPixelPointer:
-	banksel _pixelLowPtr
-	movf _pixelLowPtr, W
-	movwf FSR0L
+	banksel _pixelHighPtr
 	movf _pixelHighPtr, W
 	movwf FSR0H
+	movf _pixelLowPtr, W
+	movwf FSR0L
 
 _return1IfCurrentPixelIsWithinFrameBuffer:
 	xorlw low(frameBufferLinearPastEnd)
