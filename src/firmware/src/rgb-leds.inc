@@ -6,6 +6,8 @@
 	extern rgbLedsInitialise
 	extern rgbLedsPoll
 
+	extern rgbLedsFrameCounter
+
 	extern rgbLedsTryPutNextPixel
 	extern rgbLedsTryGetNextPixel
 	extern rgbLedsResetNextPixelPointer

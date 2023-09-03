@@ -24,6 +24,9 @@ rgbLedsInitialise:
 	pagesel _rgbLedsNextPixelInitialise
 	call _rgbLedsNextPixelInitialise
 
+	banksel rgbLedsFrameCounter
+	clrf rgbLedsFrameCounter
+
 	return
 
 	end

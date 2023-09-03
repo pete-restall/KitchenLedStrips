@@ -23,6 +23,7 @@
 	#endif
 
 	#ifndef __KITCHENLEDS_RGBLEDS_PUBLICUDATA_ASM
+	extern rgbLedsFrameCounter
 	extern rgbLedsPixelRed
 	extern rgbLedsPixelGreen
 	extern rgbLedsPixelBlue

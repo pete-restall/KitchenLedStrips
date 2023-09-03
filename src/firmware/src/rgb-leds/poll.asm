@@ -22,9 +22,14 @@ _blittingDoneButReturnIfModulatorIsStillBusy:
 	btfss STATUS, Z
 	retlw 1 ; modulator still transmitting - need calling again
 
-_stopModulatorTimer:
+_stopModulatorTimerAndIncrementFrameCounter:
 	banksel T2CON
+	btfss T2CON, EN
+	bra _waitForFrameSync
+
 	bcf T2CON, EN
+	banksel rgbLedsFrameCounter
+	incf rgbLedsFrameCounter, F
 
 _waitForFrameSync:
 	banksel PIR0
