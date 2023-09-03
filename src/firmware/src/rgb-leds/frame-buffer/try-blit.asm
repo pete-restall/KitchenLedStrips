@@ -48,10 +48,10 @@ frameBufferTryBlit:
 _testIfUnpackingAlreadyDoneButThereWasNoSpaceInCircularBuffer:
 	btfsc _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 	bra _tryPuttingUnpackedPixelIntoTransmissionBuffer
+	bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 
 _unpackCurrentFrameBufferPixel:
 _unpackMostSignificantNybblesFromCurrentFrameBufferPixel:
-	bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 	movf _frameBufferDisplayPtrLow, W
 	movwf FSR0L
 	movf _frameBufferDisplayPtrHigh, W
@@ -101,8 +101,7 @@ _tryPuttingUnpackedPixelIntoTransmissionBuffer:
 	retlw 0
 
 _updateFrameBufferPointerToNextPixel:
-	banksel _frameBufferFlags
-	bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
+	banksel _frameBufferDisplayPtrLow
 	movlw 2
 	addwf _frameBufferDisplayPtrLow, F
 	btfsc STATUS, C
@@ -121,6 +120,7 @@ _resetFrameBufferPointerToStartOfBuffer:
 	movwf _frameBufferDisplayPtrHigh
 
 _flagThatBlittingHasCompletedForThisFrame:
+	bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 	movlw (1 << _FRAME_BUFFER_FLAG_FRAMESYNC_BLIT)
 	xorwf _frameBufferFlags, F
 	retlw 1
