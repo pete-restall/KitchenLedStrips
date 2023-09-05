@@ -1,4 +1,5 @@
 	#include "initialise.inc"
+	#include "led-patterns.inc"
 	#include "mcu.inc"
 	#include "power-management.inc"
 	#include "rgb-leds.inc"
@@ -31,8 +32,11 @@ _pollRgbLedsModule:
 	banksel _isMorePollingRequired
 	iorwf _isMorePollingRequired, F
 
-	pagesel _TEMPORARY_DEBUGGING ; TODO: TEMPORARY DEBUGGING !
-	call _TEMPORARY_DEBUGGING
+_pollLedPatternsModule:
+	pagesel ledPatternsPoll
+	call ledPatternsPoll
+	banksel _isMorePollingRequired
+	iorwf _isMorePollingRequired, F
 
 _sleepIfNoMorePollingIsRequired:
 	banksel _isMorePollingRequired

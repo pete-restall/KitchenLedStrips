@@ -10,6 +10,7 @@ OBJ_FILES=\
 	config-words.o \
 	initialise.o \
 	isr.o \
+	led-patterns.a \
 	main.o \
 	pins.o \
 	power-management.o \
@@ -24,6 +25,7 @@ install: all
 clean:
 	$(RM) -f $(BUILD_ARTEFACT_PATTERN)
 	$(MAKE) -C bits clean
+	$(MAKE) -C led-patterns clean
 	$(MAKE) -C rgb-leds clean
 
 $(HEX_FILENAME): $(OBJ_FILES)

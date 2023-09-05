@@ -1,3 +1,4 @@
+	#include "led-patterns.inc"
 	#include "pins.inc"
 	#include "power-management.inc"
 	#include "rgb-leds.inc"
@@ -23,6 +24,9 @@ initialise:
 
 	pagesel rgbLedsInitialise
 	call rgbLedsInitialise
+
+	pagesel ledPatternsInitialise
+	call ledPatternsInitialise
 
 	pagesel pinsSetPeripherals
 	call pinsSetPeripherals
