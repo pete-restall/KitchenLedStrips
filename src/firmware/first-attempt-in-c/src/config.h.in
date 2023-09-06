@@ -1,8 +1,0 @@
-#ifndef __KITCHEN_LEDS_CONFIG_H
-#define __KITCHEN_LEDS_CONFIG_H
-
-#define PROJECT_VERSION_MAJOR @KitchenLedStrips_VERSION_MAJOR@
-#define PROJECT_VERSION_MINOR @KitchenLedStrips_VERSION_MINOR@
-#define PROJECT_VERSION_PATCH @KitchenLedStrips_VERSION_PATCH@
-
-#endif
