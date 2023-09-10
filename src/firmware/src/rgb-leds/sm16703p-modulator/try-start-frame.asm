@@ -32,7 +32,7 @@ _enablePwmChannelsForUartBitModulation:
 	banksel T2CON
 	clrf TMR2
 
-_burn9CyclesToCompensateForPrescaledTimer2IntoClc2ResetRegisterBeingOneBitBehindPlusSettlingTimeForUartBitOnRisingEdge:
+_burn12CyclesToCompensateForPrescaledTimer2IntoClc2ResetRegisterBeingOneBitBehindPlusSettlingTimeForUartBitOnRisingEdge:
 	movlw 3
 	decfsz WREG, W
 	bra $ - 1
