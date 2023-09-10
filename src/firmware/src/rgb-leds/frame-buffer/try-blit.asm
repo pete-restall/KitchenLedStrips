@@ -75,17 +75,19 @@ _prependLeastSignificantBitsOntoUnpackedColourComponents:
 	lslf WREG, W
 	rlf _blue, W
 
-_applyGammaCorrectionToColourComponents:
-	pagesel _gammaCorrection
-	call _gammaCorrection
+_lookUpEightBitColourComponentsFromFiveBitComponentPalettes:
+	pagesel _bluePaletteLookup
+	call _bluePaletteLookup
 	movwf _blue
 
+	pagesel _greenPaletteLookup
 	movf _green, W
-	call _gammaCorrection
+	call _greenPaletteLookup
 	movwf _green
 
+	pagesel _redPaletteLookup
 	movf _red, W
-	call _gammaCorrection
+	call _redPaletteLookup
 	movwf _red
 
 _tryPuttingUnpackedPixelIntoTransmissionBuffer:
@@ -126,40 +128,34 @@ _flagThatBlittingHasCompletedForThisFrame:
 	retlw 1
 
 
-_gammaCorrection:
+_redPaletteLookup:
 	andlw b'00011111'
-	brw
-	retlw b'00000000'
-	retlw b'10000000'
-	retlw b'01000000'
-	retlw b'11000000'
-	retlw b'00100000'
-	retlw b'10100000'
-	retlw b'11100000'
-	retlw b'01010000'
-	retlw b'10110000'
-	retlw b'10001000'
-	retlw b'10101000'
-	retlw b'01011000'
-	retlw b'00000100'
-	retlw b'01100100'
-	retlw b'00110100'
-	retlw b'00101100'
-	retlw b'00111100'
-	retlw b'00100010'
-	retlw b'10110010'
-	retlw b'11101010'
-	retlw b'10000110'
-	retlw b'00110110'
-	retlw b'00011110'
-	retlw b'00100001'
-	retlw b'10001001'
-	retlw b'11111001'
-	retlw b'10110101'
-	retlw b'00111101'
-	retlw b'00110011'
-	retlw b'00111011'
-	retlw b'10110111'
-	retlw b'11111111'
+	addlw low(_frameBufferRedPalette)
+	movwf FSR0L
+	clrf FSR0H
+	movlw high(_frameBufferRedPalette)
+	addwfc FSR0H, F
+	movf INDF0, W
+	return
+
+_greenPaletteLookup:
+	andlw b'00011111'
+	addlw low(_frameBufferGreenPalette)
+	movwf FSR0L
+	clrf FSR0H
+	movlw high(_frameBufferGreenPalette)
+	addwfc FSR0H, F
+	movf INDF0, W
+	return
+
+_bluePaletteLookup:
+	andlw b'00011111'
+	addlw low(_frameBufferBluePalette)
+	movwf FSR0L
+	clrf FSR0H
+	movlw high(_frameBufferBluePalette)
+	addwfc FSR0H, F
+	movf INDF0, W
+	return
 
 	end

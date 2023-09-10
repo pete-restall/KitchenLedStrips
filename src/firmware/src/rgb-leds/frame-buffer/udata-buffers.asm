@@ -46,4 +46,17 @@ frameBufferLinearStart res 1
 frameBufferLinearEnd res 1
 frameBufferLinearPastEnd:
 
+
+.redPaletteUdata udata
+	global _frameBufferRedPalette
+_frameBufferRedPalette res 32
+
+.greenPaletteUdata udata
+	global _frameBufferGreenPalette
+_frameBufferGreenPalette res 32
+
+.bluePaletteUdata udata
+	global _frameBufferBluePalette
+_frameBufferBluePalette res 32
+
 	end

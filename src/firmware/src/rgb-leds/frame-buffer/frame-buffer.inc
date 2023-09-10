@@ -32,12 +32,20 @@ _FRAME_BUFFER_FLAG_RGB_UNPACKED equ 2
 	extern frameBufferLinearStart
 	extern frameBufferLinearEnd
 	extern frameBufferLinearPastEnd
+
+	extern _frameBufferRedPalette
+	extern _frameBufferGreenPalette
+	extern _frameBufferBluePalette
 	#endif
 
 	#ifndef __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_UDATASTATE_ASM
 	extern _frameBufferFlags
 	extern _frameBufferDisplayPtrLow
 	extern _frameBufferDisplayPtrHigh
+	#endif
+
+	#ifndef __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_GAMMACORRECTIONPALETTENVRAM_ASM
+	extern _frameBufferGammaCorrectionPaletteNvram
 	#endif
 
 constrainedToFrameBufferOf256BytesOrLess macro
