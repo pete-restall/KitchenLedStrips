@@ -1,3 +1,4 @@
+	#include "ir-transceiver.inc"
 	#include "led-patterns.inc"
 	#include "pins.inc"
 	#include "power-management.inc"
@@ -27,6 +28,9 @@ initialise:
 
 	pagesel ledPatternsInitialise
 	call ledPatternsInitialise
+
+	pagesel irTransceiverInitialise
+	call irTransceiverInitialise
 
 	pagesel pinsSetPeripherals
 	call pinsSetPeripherals

@@ -9,6 +9,7 @@ OBJ_FILES=\
 	config.pp.o \
 	config-words.o \
 	initialise.o \
+	ir-transceiver.a \
 	isr.o \
 	led-patterns.a \
 	main.o \
@@ -25,6 +26,7 @@ install: all
 clean:
 	$(RM) -f $(BUILD_ARTEFACT_PATTERN)
 	$(MAKE) -C bits clean
+	$(MAKE) -C ir-transceiver clean
 	$(MAKE) -C led-patterns clean
 	$(MAKE) -C rgb-leds clean
 
