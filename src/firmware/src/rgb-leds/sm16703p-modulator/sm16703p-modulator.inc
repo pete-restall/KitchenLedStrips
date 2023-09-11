@@ -11,13 +11,13 @@ _CLCCON_LCMODE_AND4 equ (b'010' << LC1MODE0)
 _CLCSEL_TMR2_POSTSCALED equ 14
 _CLCSEL_PWM3_LONG equ 17
 _CLCSEL_PWM4_SHORT equ 18
-_CLCSEL_CLC2OUT_NOTRESET equ 27
 _CLCSEL_CLC3OUT_TXDATA equ 28
+_CLCSEL_CLC4OUT_NOTRESET equ 29
 _CLCSEL_UART1_DT equ 30
 
 	#ifdef __NEED_INITIALISATION_EXTERNS
 	extern sm16703pModulatorInitialiseClc3AsUart1DtRegisterClockedByLongPwm
-	extern sm16703pModulatorInitialiseClc2AsByteSynchronisedReset
+	extern sm16703pModulatorInitialiseClc4AsByteSynchronisedReset
 	extern sm16703pModulatorInitialiseClc1AsModulatedOutput
 
 	extern sm16703pModulatorInitialisePwm3AsLongDutyCycleForOnes

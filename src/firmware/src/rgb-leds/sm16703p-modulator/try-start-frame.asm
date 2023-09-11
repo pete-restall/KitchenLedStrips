@@ -32,15 +32,15 @@ _enablePwmChannelsForUartBitModulation:
 	banksel T2CON
 	clrf TMR2
 
-_burn12CyclesToCompensateForPrescaledTimer2IntoClc2ResetRegisterBeingOneBitBehindPlusSettlingTimeForUartBitOnRisingEdge:
+_burn12CyclesToCompensateForPrescaledTimer2IntoClc4ResetRegisterBeingOneBitBehindPlusSettlingTimeForUartBitOnRisingEdge:
 	movlw 3
 	decfsz WREG, W
 	bra $ - 1
 	bsf T2CON, EN
 
 _releaseResetOnNextByteBoundary:
-	banksel CLC2POL
-	bsf CLC2POL, LC2G2POL ; data
+	banksel CLC4POL
+	bsf CLC4POL, LC4G2POL ; data
 
 _enableCircularBufferTransmission:
 	banksel PIE3

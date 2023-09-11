@@ -2,8 +2,8 @@ LIB_FILENAME=../sm16703p-modulator.a
 
 OBJ_FILES=\
 	clc1-modulated-output.o \
-	clc2-byte-sync-reset.o \
 	clc3-tx-register.o \
+	clc4-byte-sync-reset.o \
 	initialise.o \
 	is-busy.o \
 	pwm3-long-duty-cycle-1.o \

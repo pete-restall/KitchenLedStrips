@@ -67,8 +67,8 @@ _tx1ReadFromCircularBufferCompleted:
 	retfie
 
 _tx1BufferEmpty:
-	banksel CLC2POL
-	bcf CLC2POL, LC2G2POL ; data
+	banksel CLC4POL
+	bcf CLC4POL, LC4G2POL ; data
 
 	banksel PIE3
 	bcf PIE3, TX1IE

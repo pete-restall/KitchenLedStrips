@@ -12,7 +12,7 @@ rgb-leds:
 
 	PWM4 is used for a short on-time bit (0).
 
-	CLC1-4 are used to modulate the UART1 DT pin by steering either the
+	CLC1, 3 and 4 are used to modulate the UART1 DT pin by steering either the
 	long on-time (PWM3) or short on-time (PWM4) to CLC1OUT.
 
 	FSR1 is allocated to a circular buffer for UART1's TX1REG bytes.  There

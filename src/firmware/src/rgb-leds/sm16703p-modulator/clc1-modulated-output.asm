@@ -19,7 +19,7 @@ sm16703pModulatorInitialiseClc1AsModulatedOutput:
 	movlw _CLCSEL_PWM4_SHORT
 	movwf CLC1SEL2
 
-	movlw _CLCSEL_CLC2OUT_NOTRESET
+	movlw _CLCSEL_CLC4OUT_NOTRESET
 	movwf CLC1SEL3
 
 	clrf CLC1GLS0 ; 3-input AND (inputs and output need to be inverted), table 31-3 of DS40001853C

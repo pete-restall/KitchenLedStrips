@@ -2,7 +2,7 @@
 
 	radix decimal
 
-_CLCDATA_TX_HELD_IN_RESET_AND_PORT_LATCHED_LOW equ (1 << MLC2OUT) | (1 << MLC1OUT)
+_CLCDATA_TX_HELD_IN_RESET_AND_PORT_LATCHED_LOW equ (1 << MLC4OUT) | (1 << MLC1OUT)
 
 .powermanagement code
 	global powerManagementInitialise
