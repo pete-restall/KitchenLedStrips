@@ -3,4 +3,20 @@
 
 	radix decimal
 
+	#ifndef __KITCHENLEDS_IRTRANSCEIVER_CLC2MODULATEDOUTPUT_ASM
+	extern _irTransceiverInitialiseClc2AsModulatedOutput
+	#endif
+
+	#ifndef __KITCHENLEDS_IRTRANSCEIVER_UART2_ASM
+	extern irTransceiverInitialiseUart2
+	#endif
+
+	#ifndef __KITCHENLEDS_IRTRANSCEIVER_CCP1CARRIERTIMEBASE_ASM
+	extern _irTransceiverInitialiseCcp1ForDoubledCarrierWave
+	#endif
+
+	#ifndef __KITCHENLEDS_IRTRANSCEIVER_TMR1CARRIERTIMEBASE_ASM
+	extern _irTransceiverInitialiseTimer1ForDoubledCarrierWave
+	#endif
+
 	#endif

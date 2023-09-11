@@ -37,12 +37,17 @@ powerManagementSleep:
 _timer2UsagePrecludesSleep:
 	banksel T2CON
 	btfsc T2CON, EN
-	iorlw 1 << IDLEN
+	bsf WREG, IDLEN
 
 _timer0UsagePrecludesSleep:
 	banksel T0CON0
 	btfsc T0CON0, EN
-	iorlw 1 << IDLEN
+	bsf WREG, IDLEN
+
+_timer1UsagePrecludesSleep:
+	banksel T1CON
+	btfsc T1CON, ON_T1CON
+	bsf WREG, IDLEN
 
 _setSleepOrIdleDependingOnPeripheralUse:
 	banksel CPUDOZE

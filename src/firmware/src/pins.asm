@@ -2,7 +2,10 @@
 
 	#include "mcu.inc"
 
+_PPSIN_RA7 equ 0x07
+_PPSIN_RB0 equ 0x08 ; TODO: A BODGE WIRE IS REQUIRED FROM RA7 TO RB0 ON BOARD V1.0 BECAUSE UART2 RX CANNOT BE PPS'D TO PORT A !  D'OH.
 _PPSOUT_CLC1OUT equ 0x01
+_PPSOUT_CLC2OUT equ 0x02
 
 .pins code
 	global pinsInitialise
@@ -21,7 +24,8 @@ _initialisePortA:
 	movwf SLRCONA
 
 	banksel ODCONA
-	clrf ODCONA
+	movlw b'10000000'
+	movwf ODCONA
 
 	banksel ANSELA
 	clrf ANSELA
@@ -31,7 +35,8 @@ _initialisePortB:
 	clrf LATB
 
 	banksel WPUB
-	movlw b'11000001'
+;	movlw b'11000001'
+	movlw b'11000000' ; TODO: REQUIRED FOR UART2 RX BODGE
 	movwf WPUB
 
 	banksel SLRCONB
@@ -39,7 +44,8 @@ _initialisePortB:
 	movwf SLRCONB
 
 	banksel ODCONB
-	movlw b'00000110'
+;	movlw b'00000110'
+	movlw b'00000111' ; TODO: REQUIRED FOR UART2 RX BODGE
 	movwf ODCONB
 
 	banksel ANSELB
@@ -81,9 +87,16 @@ _enableOutputs:
 
 
 pinsSetPeripherals:
+	banksel RC2PPS
+	clrf RC2PPS ; Defaults to CCP1 - we don't want this as we redirect it through the CLCs for modulation
+
 	banksel RC6PPS
-	clrf RC6PPS ; Defaults to TX1 - we don't want this as we redirect them through the CLCs for modulation
+	clrf RC6PPS ; Defaults to TX1 - we don't want this as we redirect it through the CLCs for modulation
 	clrf RC7PPS ; Ditto for RX1
+
+	banksel RB6PPS
+	clrf RB6PPS ; Defaults to TX2 - we don't want this as we redirect it through the CLCs for modulation
+	clrf RB7PPS ; Ditto for RX2
 
 	banksel RA0PPS
 	movlw _PPSOUT_CLC1OUT
@@ -93,6 +106,14 @@ pinsSetPeripherals:
 	movwf RA3PPS
 	movwf RA4PPS
 	movwf RA5PPS
+
+	banksel RA6PPS
+	movlw _PPSOUT_CLC2OUT
+	movwf RA6PPS
+
+	banksel RX2DTPPS
+	movlw _PPSIN_RB0 ; _PPSIN_RA7
+	movwf RX2DTPPS
 
 	return
 

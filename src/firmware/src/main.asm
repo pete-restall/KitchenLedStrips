@@ -1,4 +1,5 @@
 	#include "initialise.inc"
+	#include "ir-transceiver.inc"
 	#include "led-patterns.inc"
 	#include "mcu.inc"
 	#include "power-management.inc"
@@ -35,6 +36,12 @@ _pollRgbLedsModule:
 _pollLedPatternsModule:
 	pagesel ledPatternsPoll
 	call ledPatternsPoll
+	banksel _isMorePollingRequired
+	iorwf _isMorePollingRequired, F
+
+_pollIrTransceiverModule:
+	pagesel irTransceiverPoll
+	call irTransceiverPoll
 	banksel _isMorePollingRequired
 	iorwf _isMorePollingRequired, F
 

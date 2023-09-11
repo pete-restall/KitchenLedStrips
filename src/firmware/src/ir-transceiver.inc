@@ -4,5 +4,6 @@
 	radix decimal
 
 	extern irTransceiverInitialise
+	extern irTransceiverPoll
 
 	#endif

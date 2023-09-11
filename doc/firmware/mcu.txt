@@ -1,6 +1,8 @@
 Module and Resource Allocation
 ==============================
 rgb-leds:
+	TIMER0 is used for frame synchronisation.
+
 	UART1 is used for serial transmission; SPI would be better as it is the
 	native SM16703P / WS2812B protocol (MSb-first as opposed to UART's
 	LSb-first) but because of a lack of double-buffering the timing constraints
@@ -18,3 +20,12 @@ rgb-leds:
 	FSR1 is allocated to a circular buffer for UART1's TX1REG bytes.  There
 	can be no gap in between byte transmission as the LEDs expect a constant
 	baud of 800kHz without a clock.
+
+ir-transceiver:
+	UART2 is used for (asynchronous) serial transmission and reception with
+	the external infrared LED and receiver.
+
+	TIMER1 is the timebase for the carrier wave used by the transmitter; an
+	80kHz toggle gives a 40kHz square-wave carrier.
+
+	CLC2 is used to modulate the TIMER1 carrier with the UART2 TX pin.
