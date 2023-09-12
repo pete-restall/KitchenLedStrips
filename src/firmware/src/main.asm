@@ -1,5 +1,5 @@
+	#include "commands.inc"
 	#include "initialise.inc"
-	#include "ir-transceiver.inc"
 	#include "led-patterns.inc"
 	#include "mcu.inc"
 	#include "power-management.inc"
@@ -39,9 +39,9 @@ _pollLedPatternsModule:
 	banksel _isMorePollingRequired
 	iorwf _isMorePollingRequired, F
 
-_pollIrTransceiverModule:
-	pagesel irTransceiverPoll
-	call irTransceiverPoll
+_pollCommandsModule:
+	pagesel commandsPoll
+	call commandsPoll
 	banksel _isMorePollingRequired
 	iorwf _isMorePollingRequired, F
 

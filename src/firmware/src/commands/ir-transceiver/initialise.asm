@@ -1,4 +1,4 @@
-	#include "../mcu.inc"
+	#include "../../mcu.inc"
 	#include "ir-transceiver.inc"
 
 	radix decimal

@@ -1,18 +1,16 @@
-LIB_FILENAME=../ir-transceiver.a
+LIB_FILENAME=../commands.a
 
 OBJ_FILES=\
-	ccp1-carrier-timebase.o \
-	clc2-modulated-output.o \
-	clc3-tx-bodge-wire.o \
 	initialise.o \
-	poll.o \
-	tmr1-carrier-timebase.o \
-	uart2.o
+	ir-transceiver.a \
+	ir-transceiver-event-handlers.o \
+	poll.o
 
 all: $(LIB_FILENAME)
 
 clean:
 	$(RM) -f $(BUILD_ARTEFACT_PATTERN)
+	$(MAKE) -C ir-transceiver clean
 
 $(LIB_FILENAME): $(OBJ_FILES)
 	$(GPLIB_MERGE) $(LIB_FILENAME) $(OBJ_FILES)

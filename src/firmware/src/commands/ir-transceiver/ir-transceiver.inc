@@ -1,0 +1,30 @@
+	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_IRTRANSCEIVER_INC
+	#define __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_IRTRANSCEIVER_INC
+
+	radix decimal
+
+	extern irTransceiverOnByteReceived
+	extern irTransceiverOnReceiverFramingError
+	extern irTransceiverOnReceiverReset
+
+	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_CLC2MODULATEDOUTPUT_ASM
+	extern _irTransceiverInitialiseClc2AsModulatedOutput
+	#endif
+
+	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_CLC3TXBODGEWIRE_ASM
+	extern _irTransceiverInitialiseClc3AsUart2TxBodgeWire
+	#endif
+
+	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_UART2_ASM
+	extern irTransceiverInitialiseUart2
+	#endif
+
+	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_CCP1CARRIERTIMEBASE_ASM
+	extern _irTransceiverInitialiseCcp1ForDoubledCarrierWave
+	#endif
+
+	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_TMR1CARRIERTIMEBASE_ASM
+	extern _irTransceiverInitialiseTimer1ForDoubledCarrierWave
+	#endif
+
+	#endif

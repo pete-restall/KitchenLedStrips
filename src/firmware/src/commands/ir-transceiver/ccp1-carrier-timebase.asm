@@ -1,5 +1,5 @@
-	#define __KITCHENLEDS_IRTRANSCEIVER_CCP1CARRIERTIMEBASE_ASM
-	#include "../mcu.inc"
+	#define __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_CCP1CARRIERTIMEBASE_ASM
+	#include "../../mcu.inc"
 	#include "ir-transceiver.inc"
 
 	radix decimal
