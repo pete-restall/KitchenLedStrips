@@ -2,8 +2,6 @@
 
 	radix decimal
 
-_CLCDATA_TX_HELD_IN_RESET_AND_PORT_LATCHED_LOW equ (1 << MLC4OUT) | (1 << MLC1OUT)
-
 .powermanagement code
 	global powerManagementInitialise
 	global powerManagementSleep
@@ -32,32 +30,35 @@ powerManagementInitialise:
 
 
 powerManagementSleep:
-	clrw
-
-_timer2UsagePrecludesSleep:
-	banksel T2CON
-	btfsc T2CON, EN
-	bsf WREG, IDLEN
-
-_timer0UsagePrecludesSleep:
-	banksel T0CON0
-	btfsc T0CON0, EN
-	bsf WREG, IDLEN
-
-_timer1UsagePrecludesSleep:
+_timers1And2AreDependentOnInstructionClockAndPrecludeSleeping:
 	banksel T1CON
 	btfsc T1CON, ON_T1CON
-	bsf WREG, IDLEN
+	bra _doneSleeping
 
-_setSleepOrIdleDependingOnPeripheralUse:
+	banksel T2CON
+	btfsc T2CON, EN
+	bra _doneSleeping
+
+_useFullSleepAndNotIdleMode:
 	banksel CPUDOZE
-	bcf CPUDOZE, IDLEN
 	bcf CPUDOZE, DOZEN
-	iorwf CPUDOZE, F
+	bcf CPUDOZE, IDLEN
 
-; TODO: SEEMS TO STOP EVERYTHING WORKING - FIX THIS
-;	sleep
+_disableGlobalInterruptsSoSomePeripheralsCanWakeFromSleep:
+	banksel PIE0
+	bcf INTCON, GIE
+	bsf PIE0, TMR0IE
+	bsf PIE3, RC2IE
+
+_sleep:
+	clrwdt
+	sleep
 	nop
+
+_restoreGlobalInterrupts:
+	bcf PIE3, RC2IE
+	bcf PIE0, TMR0IE
+	bsf INTCON, GIE
 
 _doneSleeping:
 	return
