@@ -5,9 +5,9 @@
 _DUTYCYCLE equ 29
 
 .sm16703pmodulator code
-	global sm16703pModulatorInitialisePwm3AsLongDutyCycleForOnes
+	global _sm16703pModulatorInitialisePwm3AsLongDutyCycleForOnes
 
-sm16703pModulatorInitialisePwm3AsLongDutyCycleForOnes:
+_sm16703pModulatorInitialisePwm3AsLongDutyCycleForOnes:
 	banksel PMD3
 	bcf PMD3, PWM3MD
 

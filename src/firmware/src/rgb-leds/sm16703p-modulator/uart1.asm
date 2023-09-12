@@ -6,9 +6,9 @@ _TX1STA_SYNCHRONOUS_MASTER_MODE equ (1 << CSRC) | (1 << TXEN) | (1 << SYNC_TX1ST
 _RC1STA_NO_RECEPTION equ (1 << SPEN)
 
 .sm16703pmodulator code
-	global sm16703pModulatorInitialiseUart1
+	global _sm16703pModulatorInitialiseUart1
 
-sm16703pModulatorInitialiseUart1:
+_sm16703pModulatorInitialiseUart1:
 	banksel PMD4
 	bcf PMD4, UART1MD
 

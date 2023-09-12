@@ -3,6 +3,7 @@ LIB_FILENAME=../ir-transceiver.a
 OBJ_FILES=\
 	ccp1-carrier-timebase.o \
 	clc2-modulated-output.o \
+	clc3-tx-bodge-wire.o \
 	initialise.o \
 	poll.o \
 	tmr1-carrier-timebase.o \

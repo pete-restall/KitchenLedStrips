@@ -19,6 +19,9 @@ irTransceiverInitialise:
 	pagesel _irTransceiverInitialiseClc2AsModulatedOutput
 	call _irTransceiverInitialiseClc2AsModulatedOutput
 
+	pagesel _irTransceiverInitialiseClc3AsUart2TxBodgeWire
+	call _irTransceiverInitialiseClc3AsUart2TxBodgeWire
+
 	return
 
 	end

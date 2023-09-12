@@ -3,9 +3,10 @@
 	#include "mcu.inc"
 
 _PPSIN_RA7 equ 0x07
-_PPSIN_RB0 equ 0x08 ; TODO: A BODGE WIRE IS REQUIRED FROM RA7 TO RB0 ON BOARD V1.0 BECAUSE UART2 RX CANNOT BE PPS'D TO PORT A !  D'OH.
+_PPSIN_RB0 equ 0x08
 _PPSOUT_CLC1OUT equ 0x01
 _PPSOUT_CLC2OUT equ 0x02
+_PPSOUT_CLC3OUT equ 0x03
 
 .pins code
 	global pinsInitialise
@@ -35,8 +36,7 @@ _initialisePortB:
 	clrf LATB
 
 	banksel WPUB
-;	movlw b'11000001'
-	movlw b'11000000' ; TODO: REQUIRED FOR UART2 RX BODGE
+	movlw b'11000000'
 	movwf WPUB
 
 	banksel SLRCONB
@@ -44,8 +44,7 @@ _initialisePortB:
 	movwf SLRCONB
 
 	banksel ODCONB
-;	movlw b'00000110'
-	movlw b'00000111' ; TODO: REQUIRED FOR UART2 RX BODGE
+	movlw b'00000110'
 	movwf ODCONB
 
 	banksel ANSELB
@@ -76,7 +75,7 @@ _enableOutputs:
 	movwf TRISA
 
 	banksel TRISB
-	movlw b'11011111'
+	movlw b'11011110'
 	movwf TRISB
 
 	banksel TRISC
@@ -110,6 +109,15 @@ pinsSetPeripherals:
 	banksel RA6PPS
 	movlw _PPSOUT_CLC2OUT
 	movwf RA6PPS
+
+_useClc3AsBodgeWireFromRa7ToRb0DueToUart2PpsPortRestrictions:
+	banksel CLCIN1PPS
+	movlw _PPSIN_RA7
+	movwf CLCIN1PPS
+
+	banksel RB0PPS
+	movlw _PPSOUT_CLC3OUT
+	movwf RB0PPS
 
 	banksel RX2DTPPS
 	movlw _PPSIN_RB0 ; _PPSIN_RA7

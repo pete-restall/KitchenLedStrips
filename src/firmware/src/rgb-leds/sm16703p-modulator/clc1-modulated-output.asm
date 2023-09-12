@@ -3,14 +3,14 @@
 	radix decimal
 
 .sm16703pmodulator code
-	global sm16703pModulatorInitialiseClc1AsModulatedOutput
+	global _sm16703pModulatorInitialiseClc1AsModulatedOutput
 
-sm16703pModulatorInitialiseClc1AsModulatedOutput:
+_sm16703pModulatorInitialiseClc1AsModulatedOutput:
 	banksel PMD5
 	bcf PMD5, CLC1MD
 
 	banksel CLC1SEL0
-	movlw _CLCSEL_CLC3OUT_TXDATA
+	movlw _CLCSEL_UART1_DT
 	movwf CLC1SEL0
 
 	movlw _CLCSEL_PWM3_LONG

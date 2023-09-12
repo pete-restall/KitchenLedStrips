@@ -7,6 +7,10 @@
 	extern _irTransceiverInitialiseClc2AsModulatedOutput
 	#endif
 
+	#ifndef __KITCHENLEDS_IRTRANSCEIVER_CLC3TXBODGEWIRE_ASM
+	extern _irTransceiverInitialiseClc3AsUart2TxBodgeWire
+	#endif
+
 	#ifndef __KITCHENLEDS_IRTRANSCEIVER_UART2_ASM
 	extern irTransceiverInitialiseUart2
 	#endif

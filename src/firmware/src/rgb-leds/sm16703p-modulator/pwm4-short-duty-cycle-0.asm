@@ -5,9 +5,9 @@
 _DUTYCYCLE equ 10
 
 .sm16703pmodulator code
-	global sm16703pModulatorInitialisePwm4AsShortDutyCycleForZeroes
+	global _sm16703pModulatorInitialisePwm4AsShortDutyCycleForZeroes
 
-sm16703pModulatorInitialisePwm4AsShortDutyCycleForZeroes:
+_sm16703pModulatorInitialisePwm4AsShortDutyCycleForZeroes:
 	banksel PMD3
 	bcf PMD3, PWM4MD
 

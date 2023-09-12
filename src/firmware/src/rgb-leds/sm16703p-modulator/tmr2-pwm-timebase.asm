@@ -15,9 +15,9 @@ _T2HLT_MODE_SOFTGATE equ 0
 _PR2_800KHZ equ 9
 
 .sm16703pmodulator code
-	global sm16703pModulatorInitialiseTimer2ForPwm
+	global _sm16703pModulatorInitialiseTimer2ForPwm
 
-sm16703pModulatorInitialiseTimer2ForPwm:
+_sm16703pModulatorInitialiseTimer2ForPwm:
 	banksel PMD1
 	bcf PMD1, TMR2MD
 

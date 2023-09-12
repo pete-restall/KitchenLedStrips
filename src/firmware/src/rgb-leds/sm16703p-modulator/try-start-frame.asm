@@ -22,11 +22,10 @@ _ensureFrameNotInProgress:
 	btfsc T2CON, EN
 	retlw 0
 
-_transmitDummyByteToAllowIsrAndClcPrimingTime:
-	banksel TX1REG
+_disableInterruptsToPreventTimingIssuesAndResetBaudRateCounter:
 	bcf INTCON, GIE
+	banksel TX1REG
 	movf SP1BRGH, F
-	clrf TX1REG
 
 _enablePwmChannelsForUartBitModulation:
 	banksel T2CON
@@ -38,11 +37,14 @@ _burn12CyclesToCompensateForPrescaledTimer2IntoClc4ResetRegisterBeingOneBitBehin
 	bra $ - 1
 	bsf T2CON, EN
 
+_transmitDummyByteToAllowIsrAndClcResetPrimingTime:
+	clrf TX1REG
+
 _releaseResetOnNextByteBoundary:
 	banksel CLC4POL
 	bsf CLC4POL, LC4G2POL ; data
 
-_enableCircularBufferTransmission:
+_enableCircularBufferTransmissionByRestoringInterrupts:
 	banksel PIE3
 	bsf PIE3, TX1IE
 	bsf INTCON, GIE

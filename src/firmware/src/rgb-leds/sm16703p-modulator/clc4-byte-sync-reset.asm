@@ -3,9 +3,9 @@
 	radix decimal
 
 .sm16703pmodulator code
-	global sm16703pModulatorInitialiseClc4AsByteSynchronisedReset
+	global _sm16703pModulatorInitialiseClc4AsByteSynchronisedReset
 
-sm16703pModulatorInitialiseClc4AsByteSynchronisedReset:
+_sm16703pModulatorInitialiseClc4AsByteSynchronisedReset:
 	banksel PMD5
 	bcf PMD5, CLC4MD
 

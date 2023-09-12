@@ -14,7 +14,7 @@ rgb-leds:
 
 	PWM4 is used for a short on-time bit (0).
 
-	CLC1, 3 and 4 are used to modulate the UART1 DT pin by steering either the
+	CLC1 and CLC4 are used to modulate the UART1 DT pin by steering either the
 	long on-time (PWM3) or short on-time (PWM4) to CLC1OUT.
 
 	FSR1 is allocated to a circular buffer for UART1's TX1REG bytes.  There
@@ -29,3 +29,7 @@ ir-transceiver:
 	80kHz toggle gives a 40kHz square-wave carrier.
 
 	CLC2 is used to modulate the TIMER1 carrier with the UART2 TX pin.
+
+	CLC3 is used as a bodge wire for v1.0 of the board to avoid soldering a
+	physical bodge wire from RA7 to RB0.  This is necessary because PPS does
+	not allow mapping of the UART functions to PORTA.

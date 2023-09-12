@@ -1,0 +1,12 @@
+PCB / Hardware Errata
+=====================
+v1.0:
+	Pin 6 (RA7) of U3 is utilised as the infrared receiver's data line, backed
+	by a UART RX in the firmware.  However, the PPS module of the PIC16F15355
+	does not allow UART functions to be mapped to PORTA pins.  A bodge wire
+	is required from pin 6 (RA7) to pin 18 (RB0) to allow mapping.  This
+	bodge wire is accomplished by dedicating a CLC module in the firmware,
+	thus no soldering is required.
+
+	Pin 18 (RB0) is no longer available for the DEBUG0 functions as it has
+	been repurposed as the infrared receiver's data line (UART RX from RA7).
