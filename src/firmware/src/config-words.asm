@@ -10,7 +10,7 @@
 	config MCLRE=ON
 	config PWRTE=ON
 	config LPBOREN=OFF
-	config BOREN=OFF
+	config BOREN=ON
 	config BORV=LO
 	config ZCD=OFF
 	config PPS1WAY=OFF
