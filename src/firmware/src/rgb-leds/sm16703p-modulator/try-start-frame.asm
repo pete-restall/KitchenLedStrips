@@ -27,18 +27,19 @@ _disableInterruptsToPreventTimingIssuesAndResetBaudRateCounter:
 	banksel TX1REG
 	movf SP1BRGH, F
 
+_transmitDummyByteToAllowIsrAndClcResetPrimingTime:
+	clrf TX1REG
+
 _enablePwmChannelsForUartBitModulation:
 	banksel T2CON
 	clrf TMR2
 
 _burn12CyclesToCompensateForPrescaledTimer2IntoClc4ResetRegisterBeingOneBitBehindPlusSettlingTimeForUartBitOnRisingEdge:
-	movlw 3
-	decfsz WREG, W
-	bra $ - 1
+;;;;;;; TODO: VERIFY THIS ON THE BENCH - CAN IT BE REMOVED / DOES IT IMPROVE THE TIMING MARGIN ?
+;	movlw 3
+;	decfsz WREG, W
+;	bra $ - 1
 	bsf T2CON, EN
-
-_transmitDummyByteToAllowIsrAndClcResetPrimingTime:
-	clrf TX1REG
 
 _releaseResetOnNextByteBoundary:
 	banksel CLC4POL
