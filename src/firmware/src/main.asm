@@ -1,6 +1,8 @@
+	#define __KITCHENLEDS_MAIN_ASM
 	#include "commands.inc"
 	#include "initialise.inc"
 	#include "led-patterns.inc"
+	#include "main.inc"
 	#include "mcu.inc"
 	#include "power-management.inc"
 	#include "rgb-leds.inc"
