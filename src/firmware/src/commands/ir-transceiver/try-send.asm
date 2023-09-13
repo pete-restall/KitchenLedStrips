@@ -17,6 +17,7 @@ irTransceiverTrySend:
 
 _startTransmission:
 	banksel T1CON
+	btfss T1CON, ON_T1CON
 	bsf T1CON, ON_T1CON
 
 	banksel TX2STA
