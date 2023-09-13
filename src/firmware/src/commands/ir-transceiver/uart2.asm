@@ -6,7 +6,7 @@
 
 _TX2STA_ASYNCHRONOUS_8BIT_TRANSMISSION equ 0
 _RC2STA_CONTINUOUS_8BIT_RECEPTION equ (1 << SPEN) | (1 << CREN)
-_BAUD2CON_TXIDLE0_16BIT_WAKEUP equ (1 << SCKP) | (1 << BRG16) | (1 << WUE)
+_BAUD2CON_TXIDLE0_16BIT equ (1 << SCKP) | (1 << BRG16)
 _SP2BRG_1250HZ equ 1599
 
 .irtransceiver code
@@ -18,7 +18,7 @@ irTransceiverInitialiseUart2:
 
 _configureBaudRateGenerator:
 	banksel BAUD2CON
-	movlw _BAUD2CON_TXIDLE0_16BIT_WAKEUP
+	movlw _BAUD2CON_TXIDLE0_16BIT
 	movwf BAUD2CON
 
 _setBaudRateTo1250bps:

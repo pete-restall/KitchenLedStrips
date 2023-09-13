@@ -44,6 +44,10 @@ _useFullSleepAndNotIdleMode:
 	bcf CPUDOZE, DOZEN
 	bcf CPUDOZE, IDLEN
 
+_enableUart2WakeupByte:
+	banksel BAUD2CON
+	bsf BAUD2CON, WUE
+
 _disableGlobalInterruptsSoSomePeripheralsCanWakeFromSleep:
 	banksel PIE0
 	bcf INTCON, GIE
@@ -59,6 +63,10 @@ _restoreGlobalInterrupts:
 	bcf PIE3, RC2IE
 	bcf PIE0, TMR0IE
 	bsf INTCON, GIE
+
+_disableUart2WakeupByte:
+	banksel BAUD2CON
+	bcf BAUD2CON, WUE
 
 _doneSleeping:
 	return
