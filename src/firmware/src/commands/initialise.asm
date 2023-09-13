@@ -1,4 +1,5 @@
 	#include "../mcu.inc"
+	#include "commands.inc"
 	#include "ir-transceiver.inc"
 
 	radix decimal
@@ -7,6 +8,9 @@
 	global commandsInitialise
 
 commandsInitialise:
+	banksel _commandsIrTransceiverState
+	clrf _commandsIrTransceiverState
+
 	pagesel irTransceiverInitialise
 	call irTransceiverInitialise
 

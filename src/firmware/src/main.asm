@@ -9,6 +9,10 @@
 	radix decimal
 
 .mainUdata udata
+	global mainTimebaseLow
+	global mainTimebaseHigh
+mainTimebaseLow res 1
+mainTimebaseHigh res 1
 _isMorePollingRequired res 1
 
 .main code
@@ -22,9 +26,40 @@ main:
 	bsf INTCON, PEIE
 	bsf INTCON, GIE
 
+	banksel mainTimebaseLow
+	clrf mainTimebaseLow
+	clrf mainTimebaseHigh
+
+	; !!! TODO: START OF TEMPORARY DEBUGGING !!!
+	extern _frameBufferRedPalette
+	extern _frameBufferGreenPalette
+	extern _frameBufferBluePalette
+	movlw 0xff
+	banksel _frameBufferRedPalette
+	movwf _frameBufferRedPalette
+	clrf _frameBufferRedPalette + 1
+	banksel _frameBufferGreenPalette
+	clrf _frameBufferGreenPalette
+	movwf _frameBufferGreenPalette + 1
+	banksel _frameBufferBluePalette
+	clrf _frameBufferBluePalette
+	clrf _frameBufferBluePalette + 1
+	; !!! TODO: END OF TEMPORARY DEBUGGING !!!
+
 _pollingLoop:
 	clrwdt
-	banksel _isMorePollingRequired
+
+_incrementMainTimebaseIfFrameCounterHasChanged:
+	banksel rgbLedsFrameCounter
+	movf rgbLedsFrameCounter, W
+
+	banksel mainTimebaseLow
+	xorwf mainTimebaseLow, W
+	btfsc STATUS, Z
+	incf mainTimebaseLow, F
+	btfsc STATUS, Z
+	incf mainTimebaseHigh, F
+
 	clrf _isMorePollingRequired
 
 _pollRgbLedsModule:
@@ -53,6 +88,35 @@ _sleepIfNoMorePollingIsRequired:
 
 	pagesel powerManagementSleep
 	call powerManagementSleep
+
+	; !!! TODO: START OF TEMPORARY DEBUGGING (TRANSMIT COLOUR NUMBER OVER IR LED) !!!
+	banksel mainTimebaseLow
+	movf mainTimebaseLow, W
+	banksel _frameCount
+	xorwf _frameCount, W
+	btfss STATUS, Z
+	bra _pollingLoop
+
+	movlw 25
+	addwf _frameCount, F
+	movlw (1 << 5)
+	banksel LATC
+	xorwf LATC, F
+
+	clrw
+
+	extern irTransceiverTrySend
+	pagesel irTransceiverTrySend
+	call irTransceiverTrySend
+
+	clrw
+	banksel LATC
+	btfsc LATC, 5
+	movlw 1
+
+	call irTransceiverTrySend
+	; !!! TODO: END OF TEMPORARY DEBUGGING !!!
+
 	bra _pollingLoop
 
 

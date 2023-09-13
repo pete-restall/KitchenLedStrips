@@ -3,8 +3,13 @@
 
 	radix decimal
 
+_RECEIVED_BYTE_TIMEOUT equ 2
+
+_POLL_FLAG_SENT_TIMEOUT equ 0
+
 	extern irTransceiverOnByteReceived
 	extern irTransceiverOnReceiverFramingError
+	extern irTransceiverOnReceiverTimeout
 	extern irTransceiverOnReceiverReset
 
 	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_CLC2MODULATEDOUTPUT_ASM
@@ -25,6 +30,11 @@
 
 	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_TMR1CARRIERTIMEBASE_ASM
 	extern _irTransceiverInitialiseTimer1ForDoubledCarrierWave
+	#endif
+
+	#ifndef __KITCHENLEDS_COMMANDS_IRTRANSCEIVER_UDATA_ASM
+	extern _irTransceiverLastReceivedByteTimestamp
+	extern _irTransceiverPollState
 	#endif
 
 	#endif

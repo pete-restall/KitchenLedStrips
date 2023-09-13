@@ -8,7 +8,8 @@ OBJ_FILES=\
 	poll.o \
 	tmr1-carrier-timebase.o \
 	try-send.o \
-	uart2.o
+	uart2.o \
+	udata.o
 
 all: $(LIB_FILENAME)
 

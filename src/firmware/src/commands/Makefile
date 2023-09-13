@@ -4,7 +4,8 @@ OBJ_FILES=\
 	initialise.o \
 	ir-transceiver.a \
 	ir-transceiver-event-handlers.o \
-	poll.o
+	poll.o \
+	udata.o
 
 all: $(LIB_FILENAME)
 

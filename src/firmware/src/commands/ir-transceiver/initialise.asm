@@ -7,6 +7,10 @@
 	global irTransceiverInitialise
 
 irTransceiverInitialise:
+	banksel _irTransceiverLastReceivedByteTimestamp
+	clrf _irTransceiverLastReceivedByteTimestamp
+	clrf _irTransceiverPollState
+
 	pagesel irTransceiverInitialiseUart2
 	call irTransceiverInitialiseUart2
 
