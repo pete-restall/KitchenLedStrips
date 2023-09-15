@@ -1,6 +1,7 @@
 LIB_FILENAME=../rgb-leds.a
 
 OBJ_FILES=\
+	enable-disable-blitting.o \
 	frame-buffer.a \
 	initialise.o \
 	next-pixel.o \

@@ -1,8 +1,13 @@
+	#define __KITCHENLEDS_RGBLEDS_POLL_ASM
 	#include "../mcu.inc"
 	#include "frame-buffer.inc"
 	#include "rgb-leds.inc"
 
 	radix decimal
+
+.rgbledsUdata udata
+	global _rgbLedsPollState
+_rgbLedsPollState res 1
 
 .rgbleds code
 	global rgbLedsPoll
@@ -24,18 +29,21 @@ _blittingDoneButReturnIfModulatorIsStillBusy:
 
 _stopModulatorTimerAndIncrementFrameCounter:
 	banksel T2CON
-	btfss T2CON, EN
-	bra _waitForFrameSync
-
 	bcf T2CON, EN
-	banksel rgbLedsFrameCounter
-	incf rgbLedsFrameCounter, F
 
 _waitForFrameSync:
 	banksel PIR0
 	btfss PIR0, TMR0IF
 	retlw 0 ; waiting for frame sync - don't need calling again for a while
 	bcf PIR0, TMR0IF
+
+	banksel rgbLedsFrameCounter
+	incf rgbLedsFrameCounter, F
+
+_enableOrDisableBlittingOnlyOnFrameSync:
+	banksel _rgbLedsPollState
+	btfsc _rgbLedsPollState, _POLL_FLAG_DISABLE_BLITTING
+	retlw 0 ; don't blit - don't need calling again for a while
 
 _syncFrameBufferAndStartBlitting:
 	pagesel frameBufferSyncAndTryBlit

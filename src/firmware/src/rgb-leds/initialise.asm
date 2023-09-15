@@ -9,6 +9,9 @@
 	global rgbLedsInitialise
 
 rgbLedsInitialise:
+	banksel _rgbLedsPollState
+	clrf _rgbLedsPollState
+
 	pagesel isrTxBufferReset
 	call isrTxBufferReset
 

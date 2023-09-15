@@ -3,9 +3,15 @@
 
 	radix decimal
 
+_POLL_FLAG_DISABLE_BLITTING equ 0
+
 	extern rgbLedsModulatorInitialise
 	extern rgbLedsModulatorIsBusy
 	extern rgbLedsModulatorTryStartFrame
+
+	#ifndef __KITCHENLEDS_RGBLEDS_POLL_ASM
+	extern _rgbLedsPollState
+	#endif
 
 	#ifndef __KITCHENLEDS_RGBLEDS_TRYPUTNEXTPIXELINTOTX_ASM
 	extern rgbLedsTryPutNextPixelIntoTransmissionBuffer
