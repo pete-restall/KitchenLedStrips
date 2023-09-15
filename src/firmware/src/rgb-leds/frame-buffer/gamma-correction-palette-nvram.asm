@@ -1,6 +1,3 @@
-	#define __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_GAMMACORRECTIONPALETTENVRAM_ASM
-	#include "frame-buffer.inc"
-
 	radix decimal
 
 .framebuffer code

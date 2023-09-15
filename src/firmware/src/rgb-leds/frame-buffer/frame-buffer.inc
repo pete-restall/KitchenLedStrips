@@ -44,9 +44,12 @@ _FRAME_BUFFER_FLAG_RGB_UNPACKED equ 2
 	extern _frameBufferDisplayPtrHigh
 	#endif
 
-	#ifndef __KITCHENLEDS_RGBLEDS_FRAMEBUFFER_GAMMACORRECTIONPALETTENVRAM_ASM
 	extern _frameBufferGammaCorrectionPaletteNvram
-	#endif
+
+	extern _frameBufferDefaultRedPalette
+	extern _frameBufferDefaultGreenPalette
+	extern _frameBufferDefaultBluePalette
+
 
 constrainedToFrameBufferOf256BytesOrLess macro
 	#if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER < 2)

@@ -32,22 +32,6 @@ main:
 	clrf mainTimebaseLow
 	clrf mainTimebaseHigh
 
-	; !!! TODO: START OF TEMPORARY DEBUGGING !!!
-;	extern _frameBufferRedPalette
-;	extern _frameBufferGreenPalette
-;	extern _frameBufferBluePalette
-;	movlw 0xff
-;	banksel _frameBufferRedPalette
-;	movwf _frameBufferRedPalette
-;	clrf _frameBufferRedPalette + 1
-;	banksel _frameBufferGreenPalette
-;	clrf _frameBufferGreenPalette
-;	movwf _frameBufferGreenPalette + 1
-;	banksel _frameBufferBluePalette
-;	clrf _frameBufferBluePalette
-;	clrf _frameBufferBluePalette + 1
-	; !!! TODO: END OF TEMPORARY DEBUGGING !!!
-
 _pollingLoop:
 	clrwdt
 
@@ -114,11 +98,11 @@ _sleepIfNoMorePollingIsRequired:
 	pagesel irTransceiverTrySend
 	call irTransceiverTrySend
 
-	clrw
-	banksel LATC
-	btfsc LATC, 5
-	movlw 1
+	banksel _frameCount
+	btfsc _frameCount, 0
+	incf _colour, F
 
+	movf _colour, W
 	call irTransceiverTrySend
 
 
@@ -139,6 +123,7 @@ _sleepIfNoMorePollingIsRequired:
 
 .TEMPORARY_DEBUGGING_UDATA udata
 _frameCount res 1
+_colour res 1
 _throbValue res 1
 _throbDirection res 1
 

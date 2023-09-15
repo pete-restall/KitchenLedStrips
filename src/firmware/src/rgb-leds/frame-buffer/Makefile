@@ -2,6 +2,7 @@ LIB_FILENAME=../frame-buffer.a
 
 OBJ_FILES=\
 	clear.o \
+	default-palettes.o \
 	gamma-correction-palette-nvram.o \
 	initialise.o \
 	try-blit.o \

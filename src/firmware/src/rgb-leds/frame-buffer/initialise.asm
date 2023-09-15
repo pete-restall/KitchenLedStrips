@@ -24,47 +24,57 @@ _clearFrameBuffer:
 	pagesel frameBufferClear
 	call frameBufferClear
 
-_defaultColourComponentPalettesToGammaCorrection:
 _loadRedPalette:
 	movlw low(_frameBufferRedPalette)
 	movwf FSR0L
 	movlw high(_frameBufferRedPalette)
 	movwf FSR0H
-	pagesel _loadPaletteUsingDestinationOfFsr0
-	call _loadPaletteUsingDestinationOfFsr0
+	pagesel _loadDefaultRedPaletteUsingDestinationOfFsr0
+	call _loadDefaultRedPaletteUsingDestinationOfFsr0
 
 _loadGreenPalette:
 	movlw low(_frameBufferGreenPalette)
 	movwf FSR0L
 	movlw high(_frameBufferGreenPalette)
 	movwf FSR0H
-	pagesel _loadPaletteUsingDestinationOfFsr0
-	call _loadPaletteUsingDestinationOfFsr0
+	pagesel _loadDefaultGreenPaletteUsingDestinationOfFsr0
+	call _loadDefaultGreenPaletteUsingDestinationOfFsr0
 
 _loadBluePalette:
 	movlw low(_frameBufferBluePalette)
 	movwf FSR0L
 	movlw high(_frameBufferBluePalette)
 	movwf FSR0H
-	pagesel _loadPaletteUsingDestinationOfFsr0
-	call _loadPaletteUsingDestinationOfFsr0
+	pagesel _loadDefaultBluePaletteUsingDestinationOfFsr0
+	call _loadDefaultBluePaletteUsingDestinationOfFsr0
 
 	return
 
 
-_loadPaletteUsingDestinationOfFsr0:
+_defineLoadDefaultPaletteUsingDestinationOfFsr0For macro paletteLookupFunction
 	addfsr FSR0, 31
 	movlw 32
 	movwf workingA
 
-	pagesel _frameBufferGammaCorrectionPaletteNvram
-_loadNextByteFromPalette:
+	pagesel paletteLookupFunction
+	local __loadNextByteFromPalette
+__loadNextByteFromPalette:
 	decf workingA, W
-	call _frameBufferGammaCorrectionPaletteNvram
+	call paletteLookupFunction
 	movwi FSR0--
 	decfsz workingA, F
-	bra _loadNextByteFromPalette
+	bra __loadNextByteFromPalette
 
 	return
+	endm
+
+_loadDefaultRedPaletteUsingDestinationOfFsr0:
+	_defineLoadDefaultPaletteUsingDestinationOfFsr0For _frameBufferDefaultRedPalette
+
+_loadDefaultGreenPaletteUsingDestinationOfFsr0:
+	_defineLoadDefaultPaletteUsingDestinationOfFsr0For _frameBufferDefaultGreenPalette
+
+_loadDefaultBluePaletteUsingDestinationOfFsr0:
+	_defineLoadDefaultPaletteUsingDestinationOfFsr0For _frameBufferDefaultBluePalette
 
 	end
