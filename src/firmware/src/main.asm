@@ -33,19 +33,19 @@ main:
 	clrf mainTimebaseHigh
 
 	; !!! TODO: START OF TEMPORARY DEBUGGING !!!
-	extern _frameBufferRedPalette
-	extern _frameBufferGreenPalette
-	extern _frameBufferBluePalette
-	movlw 0xff
-	banksel _frameBufferRedPalette
-	movwf _frameBufferRedPalette
-	clrf _frameBufferRedPalette + 1
-	banksel _frameBufferGreenPalette
-	clrf _frameBufferGreenPalette
-	movwf _frameBufferGreenPalette + 1
-	banksel _frameBufferBluePalette
-	clrf _frameBufferBluePalette
-	clrf _frameBufferBluePalette + 1
+;	extern _frameBufferRedPalette
+;	extern _frameBufferGreenPalette
+;	extern _frameBufferBluePalette
+;	movlw 0xff
+;	banksel _frameBufferRedPalette
+;	movwf _frameBufferRedPalette
+;	clrf _frameBufferRedPalette + 1
+;	banksel _frameBufferGreenPalette
+;	clrf _frameBufferGreenPalette
+;	movwf _frameBufferGreenPalette + 1
+;	banksel _frameBufferBluePalette
+;	clrf _frameBufferBluePalette
+;	clrf _frameBufferBluePalette + 1
 	; !!! TODO: END OF TEMPORARY DEBUGGING !!!
 
 _pollingLoop:
@@ -58,10 +58,13 @@ _incrementMainTimebaseIfFrameCounterHasChanged:
 	banksel mainTimebaseLow
 	xorwf mainTimebaseLow, W
 	btfsc STATUS, Z
+	bra _startPolling
+
 	incf mainTimebaseLow, F
 	btfsc STATUS, Z
 	incf mainTimebaseHigh, F
 
+_startPolling:
 	clrf _isMorePollingRequired
 
 _pollRgbLedsModule:
@@ -117,6 +120,11 @@ _sleepIfNoMorePollingIsRequired:
 	movlw 1
 
 	call irTransceiverTrySend
+
+
+	pagesel ledPatternsBicolourInterlacedDisableInterlacing
+	call ledPatternsBicolourInterlacedDisableInterlacing
+
 	; !!! TODO: END OF TEMPORARY DEBUGGING !!!
 
 	bra _pollingLoop

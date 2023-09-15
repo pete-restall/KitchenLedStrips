@@ -1,6 +1,7 @@
 	#define __KITCHENLEDS_LEDPATTERNS_BICOLOURINTERLACED_ASM
 	#include "../mcu.inc"
 	#include "../rgb-leds.inc"
+	#include "../working-registers.inc"
 	#include "led-patterns.inc"
 
 	radix decimal
@@ -9,6 +10,7 @@ _NUMBER_OF_BLITTED_PIXEL_PAIRS_PER_POLL equ 8
 
 _FLAG_FRAME_ODD equ 0
 _FLAG_FRAME_DONE equ 1
+_FLAG_FRAME_INTERLACING_DISABLED equ 2
 
 .ledpatternsBicolourInterlacedUdata udata
 _flags res 1
@@ -23,6 +25,8 @@ _secondBlue res 1
 .ledpatterns code
 	global _ledPatternsBicolourInterlacedInitialise
 	global _ledPatternsBicolourInterlacedPoll
+	global ledPatternsBicolourInterlacedEnableInterlacing
+	global ledPatternsBicolourInterlacedDisableInterlacing
 
 _ledPatternsBicolourInterlacedInitialise:
 	banksel _flags
@@ -62,36 +66,72 @@ _resetStateForStartingNewFrame:
 	pagesel rgbLedsResetNextPixelPointer
 	call rgbLedsResetNextPixelPointer
 
-_cacheColourParametersForDurationOfCurrentFrame:
+_cacheColourParametersForDurationOfCurrentFrameWhilstDeterminingIfTheyHaveChanged:
+	clrf workingA
 	banksel _ledPatternsFirstColourRed
 	movf _ledPatternsFirstColourRed, W
 	banksel _firstRed
+	xorwf _firstRed, F
+	btfss STATUS, Z
+	bsf workingA, 0
 	movwf _firstRed
 
 	banksel _ledPatternsFirstColourGreen
 	movf _ledPatternsFirstColourGreen, W
 	banksel _firstGreen
+	xorwf _firstGreen, F
+	btfss STATUS, Z
+	bsf workingA, 0
 	movwf _firstGreen
 
 	banksel _ledPatternsFirstColourBlue
 	movf _ledPatternsFirstColourBlue, W
 	banksel _firstBlue
+	xorwf _firstBlue, F
+	btfss STATUS, Z
+	bsf workingA, 0
 	movwf _firstBlue
 
 	banksel _ledPatternsSecondColourRed
 	movf _ledPatternsSecondColourRed, W
 	banksel _secondRed
+	xorwf _secondRed, F
+	btfss STATUS, Z
+	bsf workingA, 1
 	movwf _secondRed
 
 	banksel _ledPatternsSecondColourGreen
 	movf _ledPatternsSecondColourGreen, W
 	banksel _secondGreen
+	xorwf _secondGreen, F
+	btfss STATUS, Z
+	bsf workingA, 1
 	movwf _secondGreen
 
 	banksel _ledPatternsSecondColourBlue
 	movf _ledPatternsSecondColourBlue, W
 	banksel _secondBlue
+	xorwf _secondBlue, F
+	btfss STATUS, Z
+	bsf workingA, 1
 	movwf _secondBlue
+
+_ifColoursHaveChangedSinceLastFrameOrInterlacingIsEnabledThenBlittingMustBeDone:
+	btfss _flags, _FLAG_FRAME_INTERLACING_DISABLED
+	bra _thisFrameNeedsBlitting
+
+	movf workingA, F
+	btfss STATUS, Z
+	bra _thisFrameNeedsBlitting
+
+_coloursAreUnchangedAndNoInterlacingIsRequiredSoDisableBlitting:
+	pagesel rgbLedsDisableBlitting
+	call rgbLedsDisableBlitting
+	bra _allPixelsBlitted
+
+_thisFrameNeedsBlitting:
+	pagesel rgbLedsEnableBlitting
+	call rgbLedsEnableBlitting
 
 _blitNextBatchOfPixels:
 	btfsc _flags, _FLAG_FRAME_ODD
@@ -173,6 +213,18 @@ _blitSecondColour:
 	pagesel rgbLedsTryPutNextPixel
 	call rgbLedsTryPutNextPixel
 	xorlw 0
+	return
+
+
+ledPatternsBicolourInterlacedEnableInterlacing:
+	banksel _flags
+	bcf _flags, _FLAG_FRAME_INTERLACING_DISABLED
+	return
+
+
+ledPatternsBicolourInterlacedDisableInterlacing:
+	banksel _flags
+	bsf _flags, _FLAG_FRAME_INTERLACING_DISABLED
 	return
 
 	end

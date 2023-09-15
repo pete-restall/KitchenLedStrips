@@ -6,4 +6,7 @@
 	extern ledPatternsInitialise
 	extern ledPatternsPoll
 
+	extern ledPatternsBicolourInterlacedEnableInterlacing
+	extern ledPatternsBicolourInterlacedDisableInterlacing
+
 	#endif

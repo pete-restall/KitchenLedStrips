@@ -23,7 +23,7 @@ _ensureWakeupByteReceived:
 _consumeByte:
 	xorlw 0
 	btfss STATUS, Z
-	movlw 1
+	movlw 0x1f
 
 	; !!! TODO: START OF TEMPORARY DEBUGGING (STORE THE RECEIVED VALUE AS THE CURRENT COLOUR) !!!
 	extern _ledPatternsFirstColourRed
@@ -32,15 +32,15 @@ _consumeByte:
 
 	banksel _ledPatternsFirstColourRed
 	movwf _ledPatternsFirstColourRed
-	movwf _ledPatternsFirstColourGreen
-	movwf _ledPatternsFirstColourBlue
+	clrf _ledPatternsFirstColourGreen
+	clrf _ledPatternsFirstColourBlue
 
 	extern _ledPatternsSecondColourRed
 	extern _ledPatternsSecondColourGreen
 	extern _ledPatternsSecondColourBlue
-	movwf _ledPatternsSecondColourRed
+	clrf _ledPatternsSecondColourRed
 	movwf _ledPatternsSecondColourGreen
-	movwf _ledPatternsSecondColourBlue
+	clrf _ledPatternsSecondColourBlue
 
 	banksel _commandsIrTransceiverState
 	clrf _commandsIrTransceiverState
