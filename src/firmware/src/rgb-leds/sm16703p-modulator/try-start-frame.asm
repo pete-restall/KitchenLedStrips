@@ -36,9 +36,9 @@ _enablePwmChannelsForUartBitModulation:
 
 _burn12CyclesToCompensateForPrescaledTimer2IntoClc4ResetRegisterBeingOneBitBehindPlusSettlingTimeForUartBitOnRisingEdge:
 ;;;;;;; TODO: VERIFY THIS ON THE BENCH - CAN IT BE REMOVED / DOES IT IMPROVE THE TIMING MARGIN ?
-;	movlw 3
-;	decfsz WREG, W
-;	bra $ - 1
+	movlw 3
+	decfsz WREG, W
+	bra $ - 1
 	bsf T2CON, EN
 
 _releaseResetOnNextByteBoundary:
