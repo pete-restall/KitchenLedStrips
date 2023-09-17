@@ -11,11 +11,11 @@
 		"tasks": [
 			{
 				"type": "shell",
-				"label": "build (make all)",
+				"label": "[lights-gadget] build (make all)",
 				"command": "make",
 				"args": ["all"],
 				"options": {
-					"cwd": "${workspaceFolder}"
+					"cwd": "${workspaceFolder}/lights-gadget"
 				},
 				"group": "build",
 				"problemMatcher": [],
@@ -23,11 +23,11 @@
 			},
 			{
 				"type": "shell",
-				"label": "install (make install)",
+				"label": "[lights-gadget] install (make install)",
 				"command": "sudo",
 				"args": ["make", "install"],
 				"options": {
-					"cwd": "${workspaceFolder}"
+					"cwd": "${workspaceFolder}/lights-gadget"
 				},
 				"group": "build",
 				"problemMatcher": [],
@@ -35,11 +35,11 @@
 			},
 			{
 				"type": "shell",
-				"label": "clean (make clean)",
+				"label": "[lights-gadget] clean (make clean)",
 				"command": "make",
 				"args": ["clean"],
 				"options": {
-					"cwd": "${workspaceFolder}"
+					"cwd": "${workspaceFolder}/lights-gadget"
 				},
 				"group": "build",
 				"problemMatcher": [],
