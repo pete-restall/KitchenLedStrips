@@ -1,0 +1,212 @@
+context:
+  expressions:
+    OnOff:
+      - please @turnPutOrSwitch [@lightPlural] (at,on,with,on to,up to)
+        $brightness:brightness (@brightness) $proximity:proximity (the)
+        $area:area (@pleasantries)
+      - please @turnPutOrSwitch [@lightPlural] $proximity:proximity (the)
+        $area:area (at,on,with,on to,up to) $brightness:brightness (@brightness)
+        (@pleasantries)
+      - please @turnPutOrSwitch ($hueShade:hueShade) $hue:hue [@lightPlural]
+        ($onOff:onOff) $proximity:proximity (the) $area:area (@pleasantries)
+      - please @turnPutOrSwitch ($hueShade:hueShade) $hue:hue [@lightPlural]
+        (at,on,with,on to,up to) $brightness:brightness (@brightness)
+        $proximity:proximity (the) $area:area (@pleasantries)
+      - please @turnPutOrSwitch ($hueShade:hueShade) $hue:hue [@lightPlural]
+        $proximity:proximity (the) $area:area (at,on,with,on to,up to)
+        $brightness:brightness (@brightness) (@pleasantries)
+      - please @turnPutOrSwitch [@lightPlural] ($onOff:onOff)
+        $proximity:proximity (the) $area:area (@pleasantries)
+      - (@turnPutOrSwitch) [@lightPlural] $proximity:proximity (the) $area:area
+        (at,on,with,on to,up to) $brightness:brightness (@brightness)
+        (@pleasantries)
+      - (@turnPutOrSwitch) [@lightPlural] (at,on,with,on to,up to)
+        $brightness:brightness (@brightness) $proximity:proximity (the)
+        $area:area (@pleasantries)
+      - (@turnPutOrSwitch) ($hueShade:hueShade) $hue:hue [@lightPlural]
+        $proximity:proximity (the) $area:area (at,on,with,on to,up to)
+        $brightness:brightness (@brightness) (@pleasantries)
+      - (@turnPutOrSwitch) ($hueShade:hueShade) $hue:hue [@lightPlural]
+        (at,on,with,on to,up to) $brightness:brightness (@brightness)
+        $proximity:proximity (the) $area:area (@pleasantries)
+      - (@turnPutOrSwitch) [@lightPlural] ($onOff:onOff) $proximity:proximity
+        (the) $area:area (@pleasantries)
+      - (@turnPutOrSwitch) ($hueShade:hueShade) $hue:hue [@lightPlural]
+        ($onOff:onOff) $proximity:proximity (the) $area:area (@pleasantries)
+      - "[@lightPlural] $proximity:proximity (the) $area:area (@pleasantries)"
+      - $area:area [@lightPlural] (@pleasantries)
+      - (all) [@lightPlural]
+      - please @turnPutOrSwitchWithAll [@lightPlural] (at,on,with,on to,up to)
+        $brightness:brightness (@brightness) (@pleasantries)
+      - please @turnPutOrSwitchWithAll ($hueShade:hueShade) $hue:hue
+        [@lightPlural] ($onOff:onOff) (@pleasantries)
+      - please @turnPutOrSwitchWithAll ($hueShade:hueShade) $hue:hue
+        [@lightPlural] (at,on,with,on to,up to) $brightness:brightness
+        (@brightness) (@pleasantries)
+      - please @turnPutOrSwitchWithAll [@lightPlural] ($onOff:onOff)
+        (@pleasantries)
+      - (@turnPutOrSwitchWithAll) [@lightPlural] (at,on,with,on to,up to)
+        $brightness:brightness (@brightness) (@pleasantries)
+      - (@turnPutOrSwitchWithAll) ($hueShade:hueShade) $hue:hue [@lightPlural]
+        (at,on,with,on to,up to) $brightness:brightness (@brightness)
+        (@pleasantries)
+      - (@turnPutOrSwitchWithAll) [@lightPlural] ($onOff:onOff) (@pleasantries)
+      - (@turnPutOrSwitchWithAll) ($hueShade:hueShade) $hue:hue [@lightPlural]
+        ($onOff:onOff) (@pleasantries)
+    IncreaseBrightness:
+      - (please) [brighten,increase,raise,rise] [@lightPlural]
+        (brightness,intensity) $proximity:proximity (the) $area:area
+        (@pleasantries)
+      - "[more,brighter,increased,extra] [@lightPlural] (brightness,intensity)
+        (@pleasantries)"
+      - "[brighter,more,increased,extra] $area:area [@lightPlural]
+        (brightness,intensity) (@pleasantries)"
+      - (please) [brighten,increase] (all,all the,all of the,the) (@lightPlural)
+        (brightness,intensity) (@pleasantries)
+      - (please) [brighten,increase] (the) $area:area [@lightPlural]
+        (brightness,intensity) (@pleasantries)
+      - "[brighter,more,increased,extra] [@lightPlural] (brightness,intensity)
+        (@pleasantries) $proximity:proximity (the) $area:area"
+      - "[please increase,increase,higher,more] $area:area [@lightPlural]
+        (brightness,intensity) (@pleasantries)"
+    DecreaseBrightness:
+      - (please) [darken,decrease,lower,dim,lessen] (all,all the,all of the,the)
+        [@lightPlural] (brightness,intensity) (@pleasantries)
+      - "[darker,dimmer,less,decreased] $area:area [@lightPlural]
+        (brightness,intensity) (@pleasantries)"
+      - "[darker,dimmer,less,decreased] (@lightPlural) (brightness,intensity)
+        (@pleasantries)"
+      - (please) [darken,decrease,lower,dim,lessen] (the) $area:area
+        (@lightPlural) (brightness,intensity) (@pleasantries)
+      - (please) [darken,decrease,lower,dim,lessen] (the) (@lightPlural)
+        (brightness,intensity) $proximity:proximity (the) $area:area
+        (@pleasantries)
+      - "[darker,dimmer,less,decreased] [@lightPlural] (brightness,intensity)
+        (@pleasantries) [around,to,for,by] (the) $area:area"
+      - (please) [darken,decrease,lower,dim,lessen] [@lightPlural]
+        (brightness,intensity) $proximity:proximity (the) $area:area
+        (@pleasantries)
+    AbsoluteBrightness:
+      - $brightness:brightness [@brightness] (@lightPlural) $proximity:proximity
+        (the) $area:area (@pleasantries)
+      - $brightness:brightness [@brightness] (for all) (@lightPlural)
+        (@pleasantries)
+      - $brightness:brightness [@brightness] $area:area (@lightPlural)
+        (@pleasantries)
+      - $brightness:brightness (@brightness) (for all) @lightPlural
+        (@pleasantries)
+      - $brightness:brightness (@brightness) $area:area @lightPlural
+        (@pleasantries)
+      - $brightness:brightness (@brightness) @lightPlural $proximity:proximity
+        (the) $area:area (@pleasantries)
+  slots:
+    onOff:
+      - off
+      - on
+    hue:
+      - orange
+      - yellow
+      - green
+      - blue
+      - pink
+      - white
+    hueShade:
+      - light
+      - dark
+    brightness:
+      - medium
+      - mid
+      - highest
+      - high
+      - lowest
+      - low
+      - minimum
+      - min
+      - maximum
+      - max
+      - two quarters
+      - two quarter
+      - one quarters
+      - three quarters
+      - three quarter
+      - one quarter
+      - half
+      - full
+    area:
+      - kettle
+      - toaster
+      - freezer
+      - fridge
+      - sink right side
+      - right of sink
+      - right sink
+      - left sink
+      - left of sink
+      - sink left side
+      - right of cooker
+      - right cooker
+      - cooker right side
+      - left of cooker
+      - left cooker
+      - cooker left side
+      - western
+      - west
+      - southern
+      - south
+      - eastern
+      - east
+      - northern
+      - north
+    proximity:
+      - above
+      - over
+      - covering
+      - close to
+      - right of
+      - to the right of
+      - to right of
+      - left of
+      - to the left of
+      - to left of
+      - next to
+      - next
+      - near to
+      - near
+      - by
+      - for
+      - to
+      - around
+  macros:
+    brightness:
+      - intensity
+      - brightness
+      - bright
+    lightPlural:
+      - lights
+      - light
+    pleasantries:
+      - thank you
+      - please
+    turnPutOrSwitchWithAll:
+      - switch
+      - switch the
+      - switch all
+      - switch all the
+      - switch all of the
+      - turn all
+      - put
+      - put the
+      - put all
+      - put all the
+      - put all of the
+      - turn
+      - turn all of the
+      - turn all the
+      - turn the
+    turnPutOrSwitch:
+      - put the
+      - put
+      - turn the
+      - turn
+      - switch the
+      - switch
