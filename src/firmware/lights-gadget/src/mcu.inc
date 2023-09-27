@@ -1,6 +1,6 @@
 	#ifndef __KITCHENLEDS_MCU_INC
 	#define __KITCHENLEDS_MCU_INC
-	#include "p16f15356.inc"
+	#include "p16f15355.inc"
 
 	radix decimal
 

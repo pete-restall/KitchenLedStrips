@@ -35,20 +35,8 @@ main:
 _pollingLoop:
 	clrwdt
 
-_incrementMainTimebaseIfFrameCounterHasChanged:
-	banksel rgbLedsFrameCounter
-	movf rgbLedsFrameCounter, W
-
-	banksel mainTimebaseLow
-	xorwf mainTimebaseLow, W
-	btfsc STATUS, Z
-	bra _startPolling
-
-	incf mainTimebaseLow, F
-	btfsc STATUS, Z
-	incf mainTimebaseHigh, F
-
 _startPolling:
+	banksel _isMorePollingRequired
 	clrf _isMorePollingRequired
 
 _pollRgbLedsModule:
@@ -57,6 +45,20 @@ _pollRgbLedsModule:
 	banksel _isMorePollingRequired
 	iorwf _isMorePollingRequired, F
 
+_incrementMainTimebaseIfFrameCounterHasChanged:
+	banksel rgbLedsFrameCounter
+	movf rgbLedsFrameCounter, W
+
+	banksel mainTimebaseLow
+	xorwf mainTimebaseLow, W
+	btfsc STATUS, Z
+	bra _frameCounterUnchanged
+
+	incf mainTimebaseLow, F
+	btfsc STATUS, Z
+	incf mainTimebaseHigh, F
+
+_frameCounterUnchanged:
 _pollLedPatternsModule:
 	pagesel ledPatternsPoll
 	call ledPatternsPoll
@@ -73,11 +75,11 @@ _sleepIfNoMorePollingIsRequired:
 	banksel _isMorePollingRequired
 	movf _isMorePollingRequired, F
 	btfss STATUS, Z
-	bra _pollingLoop
+	bra ____________DEBUGGING;_pollingLoop
 
 	pagesel powerManagementSleep
 	call powerManagementSleep
-
+____________DEBUGGING:
 	; !!! TODO: START OF TEMPORARY DEBUGGING (TRANSMIT COLOUR NUMBER OVER IR LED) !!!
 	banksel mainTimebaseLow
 	movf mainTimebaseLow, W

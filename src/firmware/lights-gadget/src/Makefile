@@ -21,11 +21,12 @@ OBJ_FILES=\
 all: $(HEX_FILENAME)
 
 install: all
-	$(PICKIT3_IPE) -P16F15356 -L -OL -M -Y -F$(HEX_FILENAME)
+	$(PICKIT3_IPE) -P16F15355 -L -OL -M -Y -F$(HEX_FILENAME)
 
 clean:
 	$(RM) -f $(BUILD_ARTEFACT_PATTERN)
 	$(MAKE) -C bits clean
+	$(MAKE) -C commands clean
 	$(MAKE) -C led-patterns clean
 	$(MAKE) -C rgb-leds clean
 
