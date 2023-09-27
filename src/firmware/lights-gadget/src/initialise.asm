@@ -23,6 +23,7 @@ resetPcon1 res 1
 initialise:
 _saveResetRegistersForDebugging:
 	movf STATUS, W
+	banksel resetStatus
 	movwf resetStatus
 
 	banksel PCON0
