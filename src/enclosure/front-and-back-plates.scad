@@ -1,6 +1,6 @@
 function mm(x) = x;
 
-isDrawingFrontPlate = true;
+isDrawingFrontPlate = false;
 isProjectionForDxfExport = true;
 
 plateWidth = mm(63.5);
@@ -22,13 +22,13 @@ module frontPlate(plateEngraving) {
 	difference() {
 		cube([plateWidth, plateHeight, plateThickness], center=true);
 
-		translate([0, topOfPcb + icspConnectorHeight / 2, 0])
+		translate([0, topOfPcb + gpioConnectorHeight / 2, 0])
 			cube([gpioConnectorWidth, gpioConnectorHeight, plateThroughHole], center=true);
 
-	translate([0, gpioConnectorHeight / 2, plateThickness / 2 - plateEngraving])
+	translate([0, gpioConnectorHeight / 2 + mm(1.5), plateThickness / 2 - plateEngraving])
 		linear_extrude(height=plateEngraving + mm(0.1), center=false) text("GPIO", size=4, halign="center", valign="bottom");
 
-	translate([0, -gpioConnectorHeight / 2 - mm(4), plateThickness / 2 - plateEngraving])
+	translate([0, -gpioConnectorHeight / 2 - mm(2.5), plateThickness / 2 - plateEngraving])
 		linear_extrude(height=plateEngraving + mm(0.1), center=false) text("pete@restall.net", size=4, halign="center", valign="top");
 	}
 }
@@ -37,10 +37,10 @@ module backPlate(plateEngraving) {
 	difference() {
 		cube([plateWidth, plateHeight, plateThickness], center=true);
 
-		translate([-mm(11), mm(2.2), 0])
+		translate([-mm(11.65), mm(2.2), 0])
 			cylinder(h=plateThroughHole, r=circularConnectorRadius, center=true);
 
-		translate([mm(11), mm(2.2), 0])
+		translate([mm(11.65), mm(2.2), 0])
 			cylinder(h=plateThroughHole, r=circularConnectorRadius, center=true, $fn=360);
 
 		translate([0, bottomOfPcb - icspConnectorHeight / 2, 0])
