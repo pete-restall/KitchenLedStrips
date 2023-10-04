@@ -1,6 +1,6 @@
 function mm(x) = x;
 
-isDrawingFrontPlate = false;
+isDrawingFrontPlate = true;
 isProjectionForDxfExport = true;
 
 plateWidth = mm(63.5);
@@ -25,10 +25,10 @@ module frontPlate(plateEngraving) {
 		translate([0, topOfPcb + gpioConnectorHeight / 2, 0])
 			cube([gpioConnectorWidth, gpioConnectorHeight, plateThroughHole], center=true);
 
-	translate([0, gpioConnectorHeight / 2 + mm(1.5), plateThickness / 2 - plateEngraving])
+	translate([0, gpioConnectorHeight / 2 + mm(1), plateThickness / 2 - plateEngraving])
 		linear_extrude(height=plateEngraving + mm(0.1), center=false) text("GPIO", size=4, halign="center", valign="bottom");
 
-	translate([0, -gpioConnectorHeight / 2 - mm(2.5), plateThickness / 2 - plateEngraving])
+	translate([0, -gpioConnectorHeight / 2 - mm(1.75), plateThickness / 2 - plateEngraving])
 		linear_extrude(height=plateEngraving + mm(0.1), center=false) text("pete@restall.net", size=4, halign="center", valign="top");
 	}
 }
@@ -46,10 +46,10 @@ module backPlate(plateEngraving) {
 		translate([0, bottomOfPcb - icspConnectorHeight / 2, 0])
 			cube([icspConnectorWidth, icspConnectorHeight, plateThroughHole], center=true, $fn=360);
 
-	translate([-mm(10), bottomOfPcb - icspConnectorHeight / 2, plateThickness / 2 - plateEngraving])
+	translate([-mm(6.5), bottomOfPcb - icspConnectorHeight / 2, plateThickness / 2 - plateEngraving])
 		linear_extrude(height=plateEngraving + mm(0.1), center=false) text("PWR", size=4, halign="right", valign="center");
 
-	translate([mm(10), bottomOfPcb - icspConnectorHeight / 2, plateThickness / 2 - plateEngraving])
+	translate([mm(6.5), bottomOfPcb - icspConnectorHeight / 2, plateThickness / 2 - plateEngraving])
 		linear_extrude(height=plateEngraving + mm(0.1), center=false) text("LEDs", size=4, halign="left", valign="center");
 	}
 }
