@@ -34,18 +34,14 @@ _ledPatternsBicolourInterlacedInitialise:
 	bsf _flags, _FLAG_FRAME_DONE
 
 	banksel _ledPatternsFirstColourRed ; TODO: TEMPORARY INITIALISATION CODE - PARAMETERS SHOULD BE STORED IN FLASH
-	movlw 0x1f
+	movlw 4
 	movwf _ledPatternsFirstColourRed
-	movlw 0x1e
 	movwf _ledPatternsFirstColourGreen
-	movlw 0x13
 	movwf _ledPatternsFirstColourBlue
 
-	movlw 0x1f
+	movlw 7
 	movwf _ledPatternsSecondColourRed
-	movlw 0x1e
 	movwf _ledPatternsSecondColourGreen
-	movlw 0x13
 	movwf _ledPatternsSecondColourBlue
 	return
 
@@ -134,6 +130,7 @@ _thisFrameNeedsBlitting:
 	call rgbLedsEnableBlitting
 
 _blitNextBatchOfPixels:
+	banksel _flags
 	btfsc _flags, _FLAG_FRAME_ODD
 	bra _blitOddFrame
 
@@ -168,6 +165,7 @@ _pixelPairBlitted:
 	retlw 1
 
 _allPixelsBlitted:
+	banksel _flags
 	bsf _flags, _FLAG_FRAME_DONE
 	retlw 0
 
