@@ -44,6 +44,18 @@
 				"group": "build",
 				"problemMatcher": [],
 				"detail": "make clean"
+			},
+			{
+				"type": "shell",
+				"label": "[lights-gadget] program (pickle)",
+				"command": "scp src/kitchen-led-strips.hex pi@porkpi:/tmp/ && ssh pi@porkpi \"bash -c 'n14 lvp program /tmp/kitchen-led-strips.hex && n14 lvp verify /tmp/kitchen-led-strips.hex'\"",
+				"args": [],
+				"options": {
+					"cwd": "${workspaceFolder}/lights-gadget"
+				},
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "Copy built firmware to 'porkpi' (with ICSP HAT) and run pickle to program the attached device"
 			}
 		]
 	}
