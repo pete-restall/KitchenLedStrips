@@ -1,5 +1,7 @@
+	#include "config.inc"
 	#include "isr.inc"
 	#include "mcu.inc"
+	#include "power-supply.inc"
 
 	radix decimal
 
@@ -25,6 +27,8 @@ _txBufferStart res 1
 _txBufferEnd res 1
 _txBufferPastEnd:
 
+_adcValue res 1
+
 _txWritePtrLow equ FSR1L_SHAD
 _txWritePtrHigh equ FSR1H_SHAD
 
@@ -33,9 +37,13 @@ _txWritePtrHigh equ FSR1H_SHAD
 	global isrTxBufferReset
 
 isr:
+	banksel PIE3
+	btfss PIE3, TX1IE
+	bra _checkNonTx1Interrupts
+
 	banksel PIR3
 	btfss PIR3, TX1IF
-	reset ; interrupt cause was something other than the UART buffer being empty - unhandled at present so just reset
+	bra _checkNonTx1Interrupts
 
 _tx1Isr:
 	banksel _txReadPtrLow ; TODO: SEE IF THIS IS OPTIMISED AWAY; IF NOT THEN REMOVE IT SINCE IT'S A SHARED BANK (USE AN ASSERTION TO ENFORCE THIS)
@@ -64,14 +72,64 @@ _tx1ReadFromCircularBufferCompleted:
 	banksel _txReadPtrLow
 	movf FSR1L, W
 	movwf _txReadPtrLow
-	retfie
+	bra _checkNonTx1Interrupts
 
 _tx1BufferEmpty:
+_disableLedBitstreamOutputOnNextByteBoundary:
 	banksel CLC4POL
 	bcf CLC4POL, LC4G2POL ; data
 
 	banksel PIE3
 	bcf PIE3, TX1IE
+
+_reEnableAdcInterruptForPowerSupplyMonitoringNowTheHigherFrequencyTransmissionInterruptHasBeenDisabled:
+	banksel PIE1
+	bsf PIE1, ADIE
+
+_checkNonTx1Interrupts:
+	banksel ADCON0
+	btfss ADCON0, ADON
+	retfie
+
+_checkForNewPowerSupplyVoltageSample:
+	banksel PIR1
+	btfss PIR1, ADIF
+	bra _checkPowerGoodFlagOfLedPowerSwitch
+	bcf PIR1, ADIF
+
+_checkPowerSupplyVoltageIsWithinInclusiveRange:
+	banksel ADRESH
+	movf ADRESH, W
+
+	banksel _adcValue ; TODO: SHOULD BE OPTIMISED AWAY
+	movwf _adcValue
+	sublw CONFIG_POWERMONITOR_VHIGH
+	btfss STATUS, C
+	bra _powerMonitoringFailure
+
+	movlw CONFIG_POWERMONITOR_VLOW
+	subwf _adcValue, W
+	btfss STATUS, C
+	bra _powerMonitoringFailure
+
+_checkPowerGoodFlagOfLedPowerSwitch:
+	banksel PORTB
+	btfss PORTB, RB4
+	bra _powerMonitoringFailure
+
+	banksel IOCBF
+	btfss IOCBF, RB4
+	retfie
+
+_powerMonitoringFailure:
+_disablePowerSupplyAndLedBitstreamOutputImmediately:
+	pagesel powerSupplyDisable
+	call powerSupplyDisable
+
+_alsoDisableLedBitstreamTransmissionInterrupt:
+	banksel PIE3
+	bcf PIE3, TX1IE
+
 	retfie
 
 

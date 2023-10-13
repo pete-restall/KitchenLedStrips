@@ -39,6 +39,11 @@ _timers1And2AreDependentOnInstructionClockAndPrecludeSleeping:
 	btfsc T2CON, EN
 	bra _doneSleeping
 
+_powerSupplyEnabledPrecludesSleeping:
+	banksel PORTB
+	btfsc PORTB, RB5
+	bra _doneSleeping
+
 _useFullSleepAndNotIdleMode:
 	banksel CPUDOZE
 	bcf CPUDOZE, DOZEN

@@ -15,6 +15,8 @@ OBJ_FILES=\
 	main.o \
 	pins.o \
 	power-management.o \
+	power-supply.a \
+	reset.o \
 	rgb-leds.a \
 	working-registers.o
 
@@ -28,6 +30,7 @@ clean:
 	$(MAKE) -C bits clean
 	$(MAKE) -C commands clean
 	$(MAKE) -C led-patterns clean
+	$(MAKE) -C power-supply clean
 	$(MAKE) -C rgb-leds clean
 
 $(HEX_FILENAME): $(OBJ_FILES)

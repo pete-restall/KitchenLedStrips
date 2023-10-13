@@ -45,6 +45,10 @@ _releaseResetOnNextByteBoundary:
 	banksel CLC4POL
 	bsf CLC4POL, LC4G2POL ; data
 
+_disableAdcInterruptAsItCanBeServicesByTheMuchHigherFrequencyTransmissionBufferInterrupt:
+	banksel PIE1
+	bcf PIE1, ADIE
+
 _enableCircularBufferTransmissionByRestoringInterrupts:
 	banksel PIE3
 	bsf PIE3, TX1IE

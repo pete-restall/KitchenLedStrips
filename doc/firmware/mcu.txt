@@ -33,3 +33,18 @@ ir-transceiver:
 	CLC3 is used as a bodge wire for v1.0 of the board to avoid soldering a
 	physical bodge wire from RA7 to RB0.  This is necessary because PPS does
 	not allow mapping of the UART functions to PORTA.
+
+power-monitor:
+	ADC1 is used to sample the +12V input rail; a minimum of 7.5ksps is
+	required to prevent aliasing.  Full-scale 5V represents 20V input which
+	is higher than the absolute maximum rating for the DML3006LFDS power
+	switch.  Conversion clock source is Fosc/64 to give the maximum Tad=2us
+	(better ADC performance is achieved with larger Tad).
+
+	FVR1 is set to 4.096V for ADC1.
+
+	NCO1 is used as the auto-conversion trigger for ADC1.
+
+	The reset line from the SR flip-flop (CLC4) used by the rgb-leds module
+	is manipulated to disable the serial transmission while the power rail
+	is disabled.

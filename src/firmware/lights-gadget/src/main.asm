@@ -1,12 +1,15 @@
 	#define __KITCHENLEDS_MAIN_ASM
+
 	#include "commands.inc"
+	#include "config.inc"
 	#include "initialise.inc"
 	#include "led-patterns.inc"
 	#include "main.inc"
 	#include "mcu.inc"
 	#include "power-management.inc"
+	#include "power-supply.inc"
+	#include "reset.inc"
 	#include "rgb-leds.inc"
-	#include "working-registers.inc"
 
 	radix decimal
 
@@ -21,6 +24,7 @@ _isMorePollingRequired res 1
 	global main
 
 main:
+_initialise:
 	pagesel initialise
 	call initialise
 
@@ -32,12 +36,36 @@ main:
 	clrf mainTimebaseLow
 	clrf mainTimebaseHigh
 
+_enablePowerToLedsOnlyIfPowerOnResetOrBrownOutOrMasterClear:
+	#if (CONFIG_DEFAULT_LIGHTS_ON != 0)
+
+	pagesel resetGetTypeFlags
+	call resetGetTypeFlags
+	andlw (1 << _RESET_TYPE_FLAG_POR) | (1 << _RESET_TYPE_FLAG_BOR) | (1 << _RESET_TYPE_FLAG_MCLR)
+
+	pagesel powerSupplyEnable
+	btfss STATUS, Z
+	call powerSupplyEnable
+
+	#endif
+
+	; !!! TODO: START OF TEMPORARY DEBUGGING (ENABLE POWER SWITCH FOR LEDS AND DISABLE INTERLACING) !!!
+	pagesel ledPatternsBicolourInterlacedDisableInterlacing
+	call ledPatternsBicolourInterlacedDisableInterlacing
+	; !!! TODO: END OF TEMPORARY DEBUGGING !!!
+
 _pollingLoop:
 	clrwdt
 
 _startPolling:
 	banksel _isMorePollingRequired
 	clrf _isMorePollingRequired
+
+_pollPowerSupplyModule:
+	pagesel powerSupplyPoll
+	call powerSupplyPoll
+	banksel _isMorePollingRequired
+	iorwf _isMorePollingRequired, F
 
 _pollRgbLedsModule:
 	pagesel rgbLedsPoll
@@ -75,223 +103,10 @@ _sleepIfNoMorePollingIsRequired:
 	banksel _isMorePollingRequired
 	movf _isMorePollingRequired, F
 	btfss STATUS, Z
-	bra ____________DEBUGGING;_pollingLoop
+	bra _pollingLoop
 
 	pagesel powerManagementSleep
 	call powerManagementSleep
-____________DEBUGGING:
-	; !!! TODO: START OF TEMPORARY DEBUGGING (TRANSMIT COLOUR NUMBER OVER IR LED) !!!
-	banksel mainTimebaseLow
-	movf mainTimebaseLow, W
-	banksel _frameCount
-	xorwf _frameCount, W
-	btfss STATUS, Z
 	bra _pollingLoop
-
-	movlw 25
-	addwf _frameCount, F
-	movlw (1 << 5)
-	banksel LATC
-	xorwf LATC, F
-
-	clrw
-
-	extern irTransceiverTrySend
-	pagesel irTransceiverTrySend
-	call irTransceiverTrySend
-
-	banksel _frameCount
-	btfsc _frameCount, 0
-	incf _colour, F
-
-	movf _colour, W
-	call irTransceiverTrySend
-
-
-	pagesel ledPatternsBicolourInterlacedDisableInterlacing
-	call ledPatternsBicolourInterlacedDisableInterlacing
-
-	; !!! TODO: END OF TEMPORARY DEBUGGING !!!
-
-	bra _pollingLoop
-
-
-
-
-
-
-
-	; TODO: BELOW HERE IS FOR DEBUGGING PURPOSES - REMOVE WHEN MORE FUNCTIONALITY HAS BEEN COMPLETED:
-
-.TEMPORARY_DEBUGGING_UDATA udata
-_frameCount res 1
-_colour res 1
-_throbValue res 1
-_throbDirection res 1
-
-.TEMPORARY_DEBUGGING_CODE code
-_TEMPORARY_DEBUGGING:
-	banksel rgbLedsFrameCounter
-	movf rgbLedsFrameCounter, W
-
-	banksel _frameCount
-	xorwf _frameCount, W
-	btfss STATUS, Z
-	bra _updatePixels
-
-	movlw 8;32 * 1
-	addwf _frameCount, F
-
-_throb:
-	movf _throbDirection, F
-	movlw 1
-	btfsc STATUS, Z
-	movlw -1
-	addwf _throbValue, W
-	andlw 0x1f
-	movwf _throbValue
-	btfss STATUS, Z
-	bra _updatePixels
-
-_reverseThrob:
-	clrw
-	movf _throbDirection, F
-	btfss STATUS, Z
-	movlw 0x1e
-	movwf _throbValue ; adjust pixel backwards because of overflow on increment
-
-	clrw
-	movf _throbDirection, F
-	btfsc STATUS, Z
-	movlw 1
-	movwf _throbDirection
-
-_updatePixels:
-	pagesel rgbLedsResetNextPixelPointer
-	call rgbLedsResetNextPixelPointer
-
-;	banksel _throbValue
-;	movlw 0x1e
-;	movwf _throbValue
-
-	banksel rgbLedsFrameCounter
-	btfsc rgbLedsFrameCounter, 0
-	bra _pattern2
-
-_pattern1:
-	banksel _throbValue
-	movf _throbValue, W
-	btfss _throbValue, 0
-	addlw -1
-	call _putWhite
-
-	banksel _throbValue
-	movf _throbValue, W
-	btfss _throbValue, 0
-	addlw 1
-	call _putWhite
-
-	banksel _throbValue
-	movf _throbValue, W
-	btfss _throbValue, 0
-	addlw -1
-	call _putWhite
-	bra _done
-
-_pattern2:
-	banksel _throbValue
-	movf _throbValue, W
-	btfss _throbValue, 0
-	addlw 1
-	call _putWhite
-
-	banksel _throbValue
-	movf _throbValue, W
-	btfss _throbValue, 0
-	addlw -1
-	call _putWhite
-
-	banksel _throbValue
-	movf _throbValue, W
-	btfss _throbValue, 0
-	addlw 1
-	call _putWhite
-
-_done:
-	banksel LATC
-	movlw 1 << 5
-	xorwf LATC, F
-	return
-
-_putRed:
-	banksel rgbLedsPixelRed
-	movwf rgbLedsPixelRed
-	clrf rgbLedsPixelGreen
-	clrf rgbLedsPixelBlue
-	pagesel rgbLedsTryPutNextPixel
-	call rgbLedsTryPutNextPixel
-	return
-
-_putGreen:
-	banksel rgbLedsPixelRed
-	clrf rgbLedsPixelRed
-	movwf rgbLedsPixelGreen
-	clrf rgbLedsPixelBlue
-	pagesel rgbLedsTryPutNextPixel
-	call rgbLedsTryPutNextPixel
-	return
-
-_putBlue:
-	banksel rgbLedsPixelRed
-	clrf rgbLedsPixelRed
-	clrf rgbLedsPixelGreen
-	movwf rgbLedsPixelBlue
-	pagesel rgbLedsTryPutNextPixel
-	call rgbLedsTryPutNextPixel
-	return
-
-_putWhite:
-	banksel rgbLedsPixelRed
-	movwf rgbLedsPixelRed
-	movwf rgbLedsPixelGreen
-	movwf rgbLedsPixelBlue
-;	xorlw 1
-;	btfss STATUS, Z
-;	lsrf rgbLedsPixelBlue, F
-
-	movwf workingA
-	movlw 152 ; 152/256 * blue
-	call _mul8x8
-	movf workingB, W
-	movwf rgbLedsPixelBlue
-
-
-;	swapf workingA, W
-;	andlw 0x0f
-;	swapf workingB, F
-;	iorwf workingB, W
-;	movwf rgbLedsPixelBlue
-
-	pagesel rgbLedsTryPutNextPixel
-	call rgbLedsTryPutNextPixel
-	return
-
-
-_mul8x8:
-	clrf workingB
-	clrf workingC
-	bsf workingC, 3
-	rrf workingA, F
-
-_mul8x8Loop:
-	btfsc STATUS, C
-	addwf workingB, F
-
-	rrf workingB, F
-	rrf workingA, F
-
-	decfsz workingC, F
-	bra _mul8x8Loop
-	return
 
 	end

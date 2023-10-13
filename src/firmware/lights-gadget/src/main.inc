@@ -8,10 +8,4 @@
 	extern mainTimebaseHigh
 	#endif
 
-	#ifndef __KITCHENLEDS_INITIALISE_ASM
-	extern resetStatus
-	extern resetPcon0
-	extern resetPcon1
-	#endif
-
 	#endif

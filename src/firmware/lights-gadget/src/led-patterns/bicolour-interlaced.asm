@@ -117,7 +117,7 @@ _ifColoursHaveChangedSinceLastFrameOrInterlacingIsEnabledThenBlittingMustBeDone:
 	bra _thisFrameNeedsBlitting
 
 	movf workingA, F
-	btfss STATUS, Z
+;	btfss STATUS, Z ;;;;;;; TODO: TEMPORARY DEBUGGING... THE COLOUR-CHANGE DETECTION DOESN'T SEEM TO WORK FOR THE FIRST POLL...
 	bra _thisFrameNeedsBlitting
 
 _coloursAreUnchangedAndNoInterlacingIsRequiredSoDisableBlitting:
@@ -131,30 +131,32 @@ _thisFrameNeedsBlitting:
 
 _blitNextBatchOfPixels:
 	banksel _flags
-	btfsc _flags, _FLAG_FRAME_ODD
+	movlw (1 << _FLAG_FRAME_ODD) | (1 << _FLAG_FRAME_INTERLACING_DISABLED)
+	andwf _flags, W
+	btfss STATUS, Z
 	bra _blitOddFrame
 
 _blitEvenFrame:
-	pagesel _blitFirstColour
-	call _blitFirstColour
+	pagesel _blitSecondColour
+	call _blitSecondColour
 	btfsc STATUS, Z
 	bra _allPixelsBlitted
 
-	pagesel _blitSecondColour
-	call _blitSecondColour
+	pagesel _blitFirstColour
+	call _blitFirstColour
 	btfsc STATUS, Z
 	bra _allPixelsBlitted
 
 	bra _pixelPairBlitted
 
 _blitOddFrame:
-	pagesel _blitSecondColour
-	call _blitSecondColour
+	pagesel _blitFirstColour
+	call _blitFirstColour
 	btfsc STATUS, Z
 	bra _allPixelsBlitted
 
-	pagesel _blitFirstColour
-	call _blitFirstColour
+	pagesel _blitSecondColour
+	call _blitSecondColour
 	btfsc STATUS, Z
 	bra _allPixelsBlitted
 
