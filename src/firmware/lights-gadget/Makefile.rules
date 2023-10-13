@@ -1,4 +1,6 @@
-PP_SED=sed "s/{{FIRMWARE_VERSION}}/$(FIRMWARE_VERSION)/g"
+PP_SED_FIRMWARE_VERSION=sed "s/{{FIRMWARE_VERSION}}/$(FIRMWARE_VERSION)/g"
+PP_SED_CONFIG_UNIT_ID=sed "s/{{CONFIG_UNIT_ID}}/$(CONFIG_UNIT_ID)/g"
+PP_SED=$(PP_SED_FIRMWARE_VERSION) | $(PP_SED_CONFIG_UNIT_ID)
 
 %.pp.o: %.pp.asm
 	cat "$<" | $(PP_SED) > "`basename "$@" .pp.o`".asm

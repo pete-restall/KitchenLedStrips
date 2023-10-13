@@ -3,13 +3,23 @@
 
 	radix decimal
 
-CONFIG_NUMBER_OF_PIXELS equ 3
+CONFIG_UNIT_ID equ {{CONFIG_UNIT_ID}}
+
+	#if (CONFIG_UNIT_ID == 1)
+	#include "config.fridge.inc"
+	#elif (CONFIG_UNIT_ID == 2)
+	#include "config.cooker.inc"
+	#elif (CONFIG_UNIT_ID == 3)
+	#include "config.sink.inc"
+	#elif (CONFIG_UNIT_ID == 7)
+	#include "config.debug.inc"
+	#else
+	#error "A unit ID must be provided to allow location- and device-specific configuration settings to be hard-coded into the firmware"
+	#endif
+
+	radix decimal
+
 CONFIG_NUMBER_OF_LEDS equ CONFIG_NUMBER_OF_PIXELS * 3
-
-CONFIG_POWERMONITOR_VLOW equ low(2494 * 256 / 4096)
-CONFIG_POWERMONITOR_VHIGH equ low(3366 * 256 / 4096)
-
-CONFIG_DEFAULT_LIGHTS_ON equ 1
 
 	#ifndef __KITCHENLEDS_CONFIG_ASM
 	extern FIRMWARE_VERSION

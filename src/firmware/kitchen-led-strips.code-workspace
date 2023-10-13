@@ -11,7 +11,7 @@
 		"tasks": [
 			{
 				"type": "shell",
-				"label": "[lights-gadget] build (make all)",
+				"label": "[lights-gadget] build (make all - debug board)",
 				"command": "make",
 				"args": ["all"],
 				"options": {
@@ -20,6 +20,45 @@
 				"group": "build",
 				"problemMatcher": [],
 				"detail": "make all"
+			},
+			{
+				"type": "shell",
+				"label": "[lights-gadget] build (make all - lights near fridge)",
+				"command": "make",
+				"args": ["all"],
+				"options": {
+					"cwd": "${workspaceFolder}/lights-gadget",
+					"env": {"CONFIG_UNIT_ID": "1"}
+				},
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "make all (lights located near fridge)"
+			},
+			{
+				"type": "shell",
+				"label": "[lights-gadget] build (make all - lights near cooker)",
+				"command": "make",
+				"args": ["all"],
+				"options": {
+					"cwd": "${workspaceFolder}/lights-gadget",
+					"env": {"CONFIG_UNIT_ID": "2"}
+				},
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "make all (lights located near cooker)"
+			},
+			{
+				"type": "shell",
+				"label": "[lights-gadget] build (make all - lights near sink)",
+				"command": "make",
+				"args": ["all"],
+				"options": {
+					"cwd": "${workspaceFolder}/lights-gadget",
+					"env": {"CONFIG_UNIT_ID": "3"}
+				},
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "make all (lights located near sink)"
 			},
 			{
 				"type": "shell",

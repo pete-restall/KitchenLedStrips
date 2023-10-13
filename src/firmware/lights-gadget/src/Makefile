@@ -1,5 +1,6 @@
 export DATE_YYYYMMDD=`date +"%Y%m%d"`
 export FIRMWARE_VERSION=v0.1.0 ($(DATE_YYYYMMDD))
+export CONFIG_UNIT_ID?=7
 
 HEX_FILENAME=kitchen-led-strips.hex
 
@@ -26,6 +27,7 @@ install: all
 	$(PICKIT3_IPE) -P16F15355 -L -OL -M -Y -F$(HEX_FILENAME)
 
 clean:
+	$(RM) -f config.inc
 	$(RM) -f $(BUILD_ARTEFACT_PATTERN)
 	$(MAKE) -C bits clean
 	$(MAKE) -C commands clean
