@@ -10,7 +10,9 @@ CONFIG_UNIT_ID equ {{CONFIG_UNIT_ID}}
 	#elif (CONFIG_UNIT_ID == 2)
 	#include "config.cooker.inc"
 	#elif (CONFIG_UNIT_ID == 3)
-	#include "config.sink.inc"
+	#include "config.sink-left.inc"
+	#elif (CONFIG_UNIT_ID == 4)
+	#include "config.sink-right.inc"
 	#elif (CONFIG_UNIT_ID == 7)
 	#include "config.debug.inc"
 	#else
