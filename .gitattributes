@@ -1,11 +1,13 @@
 * text eol=lf
 * text eol=lf
+*.cir binary
+*.dxf binary
+*.gz binary
+*.ibs binary
+*.inx binary
 *.ods binary
 *.pdf binary
 *.png binary
-*.dxf binary
-*.zip binary
-*.inx binary
-*.cir binary
-*.ibs binary
+*.tar binary
 *.TNO binary
+*.zip binary
