@@ -7,9 +7,11 @@
 	global _frameBufferFlags
 	global _frameBufferDisplayPtrLow
 	global _frameBufferDisplayPtrHigh
+	global _frameBufferDisplayPtrPastEnd
 
 _frameBufferFlags res 1
 _frameBufferDisplayPtrLow res 1
 _frameBufferDisplayPtrHigh res 1
+_frameBufferDisplayPtrPastEnd res 1
 
 	end

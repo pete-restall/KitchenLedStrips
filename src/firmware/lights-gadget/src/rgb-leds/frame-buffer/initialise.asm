@@ -16,9 +16,8 @@ _initialiseFrameBufferPointers:
 	movwf _frameBufferDisplayPtrLow
 	movlw high(frameBufferLinearStart)
 	movwf _frameBufferDisplayPtrHigh
-
-_referenceUnusedBankVariablesToPreventLinkerStrippingSymbolAndCorruptingTheMemoryMap:
-	movlw low(_frameBufferPastEnd)
+	movlw low(frameBufferLinearPartition0PastEnd)
+	movwf _frameBufferDisplayPtrPastEnd
 
 _clearFrameBuffer:
 	pagesel frameBufferClear

@@ -1,5 +1,7 @@
 	#define __KITCHENLEDS_RGBLEDS_POLL_ASM
+	#include "../config.inc"
 	#include "../mcu.inc"
+	#include "../pins.inc"
 	#include "frame-buffer.inc"
 	#include "rgb-leds.inc"
 
@@ -20,16 +22,45 @@ _continueBlitting:
 	btfsc STATUS, Z
 	retlw 1 ; not finished blitting - need calling again
 
-_blittingDoneButReturnIfModulatorIsStillBusy:
+_testIfBlittingHasCompletedForTheCurrentPartitionOrTheEntireFrame:
+	xorlw _FRAME_BUFFER_TRYBLIT_WAITING_PARTITIONSYNC
+	btfss STATUS, Z
+	bra _blittingFrameDoneButReturnIfModulatorIsStillBusy
+
+_blittingFirstPartitionDoneButReturnIfModulatorIsStillBusy:
 	pagesel rgbLedsModulatorIsBusy
 	call rgbLedsModulatorIsBusy
 	xorlw 0
 	btfss STATUS, Z
 	retlw 1 ; modulator still transmitting - need calling again
 
-_stopModulatorTimerAndIncrementFrameCounter:
+_stopModulatorTimerNowThatPartition0HasBeenBlittedAndModulatorHasFinished:
 	banksel T2CON
 	bcf T2CON, EN
+
+_directPinsBackToAppropriateLedStripForPartition1:
+	pinsDirectClc1outToLedsForPartition1
+
+	pagesel frameBufferSyncPartitionAndTryBlit
+	call frameBufferSyncPartitionAndTryBlit
+
+	pagesel rgbLedsModulatorTryStartFrame
+	call rgbLedsModulatorTryStartFrame
+	retlw 1 ; the circular buffer might be filled but the transmission won't have completed - need calling again
+
+_blittingFrameDoneButReturnIfModulatorIsStillBusy:
+	pagesel rgbLedsModulatorIsBusy
+	call rgbLedsModulatorIsBusy
+	xorlw 0
+	btfss STATUS, Z
+	retlw 1 ; modulator still transmitting - need calling again
+
+_stopModulatorTimerNowThatFrameHasBeenBlittedAndModulatorHasFinished:
+	banksel T2CON
+	bcf T2CON, EN
+
+_directPinsBackToAppropriateLedStripForPartition0:
+	pinsDirectClc1outToLedsForPartition0
 
 _waitForFrameSync:
 	banksel PIR0
@@ -46,8 +77,8 @@ _enableOrDisableBlittingOnlyOnFrameSync:
 	retlw 0 ; don't blit - don't need calling again for a while
 
 _syncFrameBufferAndStartBlitting:
-	pagesel frameBufferSyncAndTryBlit
-	call frameBufferSyncAndTryBlit
+	pagesel frameBufferSyncFrameAndTryBlit
+	call frameBufferSyncFrameAndTryBlit
 
 	pagesel rgbLedsModulatorTryStartFrame
 	call rgbLedsModulatorTryStartFrame

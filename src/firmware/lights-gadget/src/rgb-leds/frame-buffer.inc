@@ -3,9 +3,14 @@
 
 	radix decimal
 
+_FRAME_BUFFER_TRYBLIT_WAITING_TXBUFFER equ 0
+_FRAME_BUFFER_TRYBLIT_WAITING_FRAMESYNC equ 1
+_FRAME_BUFFER_TRYBLIT_WAITING_PARTITIONSYNC equ 2
+
 	extern frameBufferInitialise
 	extern frameBufferClear
-	extern frameBufferSyncAndTryBlit
+	extern frameBufferSyncFrameAndTryBlit
+	extern frameBufferSyncPartitionAndTryBlit
 	extern frameBufferTryBlit
 
 	extern frameBufferLinearStart
