@@ -1,6 +1,7 @@
-	radix decimal
-
+	#define __KITCHENLEDS_PINS_ASM
 	#include "mcu.inc"
+
+	radix decimal
 
 _PPSIN_RA7 equ 0x07
 _PPSIN_RB0 equ 0x08

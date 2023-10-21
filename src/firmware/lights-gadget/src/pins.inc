@@ -3,10 +3,12 @@
 
 	radix decimal
 
+	#ifndef __KITCHENLEDS_PINS_ASM
 	extern pinsInitialise
 	extern pinsSetPeripherals
 	extern pinsDirectClc1outToLedD0
 	extern pinsDirectClc1outToLedD1
+	#endif
 
 pinsDirectClc1outToLedsForPartition0 macro
 	if (CONFIG_PARTITION0_IS_LED_D0 != 0)
