@@ -23,14 +23,14 @@ frameBufferLinearPartition0End res 1
 
 frameBufferLinearPartition0PastEnd:
 frameBufferLinearPartition1Start:
-	if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER_PARTITION1 > 1)
+	#if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER_PARTITION1 > 1)
 		res _NUMBER_OF_BYTES_IN_FRAMEBUFFER_PARTITION1 - 1
-	endif
+	#endif
 frameBufferLinearPartition1End:
 frameBufferLinearEnd:
-	if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER_PARTITION1 > 0)
+	#if (_NUMBER_OF_BYTES_IN_FRAMEBUFFER_PARTITION1 > 0)
 		res 1
-	endif
+	#endif
 frameBufferLinearPartition1PastEnd:
 frameBufferLinearPastEnd:
 

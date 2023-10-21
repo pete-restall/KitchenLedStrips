@@ -30,9 +30,6 @@ frameBufferSyncFrameAndTryBlit:
 	movlw (1 << _FRAME_BUFFER_FLAG_FRAMESYNC)
 	xorwf _frameBufferFlags, F
 
-	movlw low(frameBufferLinearPartition0PastEnd)
-	movwf _frameBufferDisplayPtrPastEnd
-
 
 ;
 ; Blit the frame, or part of the frame; the LEDs' circular buffer will be filled as much as possible.
@@ -116,6 +113,7 @@ _updateFrameBufferPointerToNextPixel:
 	addwf _frameBufferDisplayPtrLow, F
 	btfsc STATUS, C
 	incf _frameBufferDisplayPtrHigh, F
+	bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 
 _tryBlittingAnotherPixelIfNotOverrunTheCurrentFrameBufferPartition:
 	movf _frameBufferDisplayPtrPastEnd, W
@@ -130,7 +128,6 @@ _checkIfCurrentPartitionOverrunIsFrameBufferOverrun:
 	bra _resetFrameBufferPointerToStartOfBuffer
 
 _currentPartitionOverrunIsNotFrameBufferOverrunSoFlagToCallerThatTxDataNeedsRoutingToTheNextLedStripBeforeNextCall:
-	bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 	bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_PARTITIONSYNC
 	movlw low(frameBufferLinearPartition1PastEnd)
 	movwf _frameBufferDisplayPtrPastEnd
@@ -141,9 +138,10 @@ _resetFrameBufferPointerToStartOfBuffer:
 	movwf _frameBufferDisplayPtrLow
 	movlw high(frameBufferLinearStart)
 	movwf _frameBufferDisplayPtrHigh
+	movlw low(frameBufferLinearPartition0PastEnd)
+	movwf _frameBufferDisplayPtrPastEnd
 
 _flagThatBlittingHasCompletedForThisFrame:
-	bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 	movlw (1 << _FRAME_BUFFER_FLAG_FRAMESYNC_BLIT)
 	xorwf _frameBufferFlags, F
 	retlw _FRAME_BUFFER_TRYBLIT_WAITING_FRAMESYNC
