@@ -28,8 +28,12 @@ _waitForNextFrame:
 	bcf _ledPatternsFlags, _LED_PATTERNS_FLAG_FRAMESYNC
 
 _pollCurrentPattern:
-	pagesel _ledPatternsBicolourInterlacedPoll
-	call _ledPatternsBicolourInterlacedPoll
+; TODO: NEEDS TO BE SELECTABLE
+;	pagesel _ledPatternsBicolourInterlacedPoll
+;	call _ledPatternsBicolourInterlacedPoll
+
+	pagesel _ledPatternsSwipeInOutPoll
+	call _ledPatternsSwipeInOutPoll
 
 _returnIfPatternPollDidNotReturnZero:
 	xorlw 0

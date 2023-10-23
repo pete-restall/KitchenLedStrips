@@ -11,6 +11,10 @@ ledPatternsInitialise:
 
 	pagesel _ledPatternsBicolourInterlacedInitialise
 	call _ledPatternsBicolourInterlacedInitialise
+
+	pagesel _ledPatternsSwipeInOutInitialise
+	call _ledPatternsSwipeInOutInitialise
+
 	return
 
 	end

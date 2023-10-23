@@ -10,6 +10,11 @@ _LED_PATTERNS_FLAG_FRAMESYNC equ 0
 	extern _ledPatternsBicolourInterlacedPoll
 	#endif
 
+	#ifndef __KITCHENLEDS_LEDPATTERNS_SWIPEINOUT_ASM
+	extern _ledPatternsSwipeInOutInitialise
+	extern _ledPatternsSwipeInOutPoll
+	#endif
+
 	#ifndef __KITCHENLEDS_LEDPATTERNS_UDATA_ASM
 	extern _ledPatternsFlags
 

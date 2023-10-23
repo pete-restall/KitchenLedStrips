@@ -4,6 +4,7 @@ OBJ_FILES=\
 	bicolour-interlaced.o \
 	initialise.o \
 	poll.o \
+	swipe-in-out.o \
 	udata.o
 
 all: $(LIB_FILENAME)

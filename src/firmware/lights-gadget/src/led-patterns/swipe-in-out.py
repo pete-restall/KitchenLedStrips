@@ -1,4 +1,4 @@
-number_of_pixels = 64
+number_of_pixels = 65
 centre_pixel_indices = [(number_of_pixels - 1) >> 1, number_of_pixels >> 1]
 pixels = [0] * number_of_pixels
 
@@ -27,7 +27,7 @@ def do_swipe(shade_increment, pixel_done_index, pixel_done_value):
 		left_index = centre_pixel_indices[0]
 		right_index = centre_pixel_indices[1]
 	elif shade_increment < 0:
-		left_index = step_size_pixels - 1
+		left_index = step_size_pixels - 1 #################### TODO: THESE TWO VALUES CAN BE COMPUTED VIA MODULO, WHICH CAN BE DONE AT ASSEMBLY-TIME (NO NEED FOR DIV ROUTINES)
 		right_index = number_of_pixels - step_size_pixels
 
 	while frame_index < 100:
