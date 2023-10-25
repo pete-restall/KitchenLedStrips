@@ -109,36 +109,68 @@ _tryPuttingUnpackedPixelIntoTransmissionBuffer:
 
 _updateFrameBufferPointerToNextPixel:
 	banksel _frameBufferDisplayPtrLow
+	btfsc _frameBufferFlags, _FRAME_BUFFER_FLAG_PARTITION_REVERSED
+	bra _updateFrameBufferPointerToNextPixelReversed
+
+_updateFrameBufferPointerToNextPixelForwards:
 	movlw 2
 	addwf _frameBufferDisplayPtrLow, F
 	btfsc STATUS, C
 	incf _frameBufferDisplayPtrHigh, F
-	bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
+	bra _tryBlittingAnotherPixelIfNotOverrunTheCurrentFrameBufferPartition
+
+_updateFrameBufferPointerToNextPixelReversed:
+	movlw -2
+	addwf _frameBufferDisplayPtrLow, F
+	btfss STATUS, C
+	decf _frameBufferDisplayPtrHigh, F
 
 _tryBlittingAnotherPixelIfNotOverrunTheCurrentFrameBufferPartition:
+	bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_RGB_UNPACKED
 	movf _frameBufferDisplayPtrPastEnd, W
 	xorwf _frameBufferDisplayPtrLow, W
 	btfss STATUS, Z
 	bra _unpackCurrentFrameBufferPixel
 
 _checkIfCurrentPartitionOverrunIsFrameBufferOverrun:
-	movlw low(frameBufferLinearPartition1PastEnd)
+	movlw PARTITION1_PTR_PAST_END
 	xorwf _frameBufferDisplayPtrPastEnd, W
 	btfsc STATUS, Z
 	bra _resetFrameBufferPointerToStartOfBuffer
 
 _currentPartitionOverrunIsNotFrameBufferOverrunSoFlagToCallerThatTxDataNeedsRoutingToTheNextLedStripBeforeNextCall:
 	bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_PARTITIONSYNC
-	movlw low(frameBufferLinearPartition1PastEnd)
+	#if (CONFIG_PARTITION1_IS_REVERSED != 0)
+		bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_PARTITION_REVERSED
+	#else
+		bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_PARTITION_REVERSED
+	#endif
+
+	movlw PARTITION1_PTR_START_LOW
+	movwf _frameBufferDisplayPtrLow
+
+	movlw PARTITION1_PTR_START_HIGH
+	movwf _frameBufferDisplayPtrHigh
+
+	movlw PARTITION1_PTR_PAST_END
 	movwf _frameBufferDisplayPtrPastEnd
+
 	retlw _FRAME_BUFFER_TRYBLIT_WAITING_PARTITIONSYNC
 
 _resetFrameBufferPointerToStartOfBuffer:
-	movlw low(frameBufferLinearStart)
+	#if (CONFIG_PARTITION0_IS_REVERSED != 0)
+		bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_PARTITION_REVERSED
+	#else
+		bcf _frameBufferFlags, _FRAME_BUFFER_FLAG_PARTITION_REVERSED
+	#endif
+
+	movlw PARTITION0_PTR_START_LOW
 	movwf _frameBufferDisplayPtrLow
-	movlw high(frameBufferLinearStart)
+
+	movlw PARTITION0_PTR_START_HIGH
 	movwf _frameBufferDisplayPtrHigh
-	movlw low(frameBufferLinearPartition0PastEnd)
+
+	movlw PARTITION0_PTR_PAST_END
 	movwf _frameBufferDisplayPtrPastEnd
 
 _flagThatBlittingHasCompletedForThisFrame:

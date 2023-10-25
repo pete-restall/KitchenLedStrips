@@ -8,10 +8,31 @@
 _NUMBER_OF_BYTES_IN_FRAMEBUFFER_PARTITION0 equ CONFIG_NUMBER_OF_PIXELS_PARTITION0 * 2
 _NUMBER_OF_BYTES_IN_FRAMEBUFFER_PARTITION1 equ CONFIG_NUMBER_OF_PIXELS_PARTITION1 * 2
 
+#if (CONFIG_PARTITION0_IS_REVERSED == 0)
+	#define PARTITION0_PTR_START_LOW low(frameBufferLinearPartition0Start)
+	#define PARTITION0_PTR_START_HIGH high(frameBufferLinearPartition0Start)
+	#define PARTITION0_PTR_PAST_END low(frameBufferLinearPartition0PastEnd)
+#else
+	#define PARTITION0_PTR_START_LOW low(frameBufferLinearPartition0PastEnd - 2)
+	#define PARTITION0_PTR_START_HIGH high(frameBufferLinearPartition0PastEnd - 2)
+	#define PARTITION0_PTR_PAST_END low(frameBufferLinearPartition0Start - 2)
+#endif
+
+#if (CONFIG_PARTITION1_IS_REVERSED == 0)
+	#define PARTITION1_PTR_START_LOW low(frameBufferLinearPartition1Start)
+	#define PARTITION1_PTR_START_HIGH high(frameBufferLinearPartition1Start)
+	#define PARTITION1_PTR_PAST_END low(frameBufferLinearPartition1PastEnd)
+#else
+	#define PARTITION1_PTR_START_LOW low(frameBufferLinearPartition1PastEnd - 2)
+	#define PARTITION1_PTR_START_HIGH high(frameBufferLinearPartition1PastEnd - 2)
+	#define PARTITION1_PTR_PAST_END low(frameBufferLinearPartition1Start - 2)
+#endif
+
 _FRAME_BUFFER_FLAG_FRAMESYNC equ 0
 _FRAME_BUFFER_FLAG_FRAMESYNC_BLIT equ 1
 _FRAME_BUFFER_FLAG_PARTITIONSYNC equ 2
 _FRAME_BUFFER_FLAG_RGB_UNPACKED equ 3
+_FRAME_BUFFER_FLAG_PARTITION_REVERSED equ 4
 
 _FRAME_BUFFER_TRYBLIT_WAITING_TXBUFFER equ 0
 _FRAME_BUFFER_TRYBLIT_WAITING_FRAMESYNC equ 1

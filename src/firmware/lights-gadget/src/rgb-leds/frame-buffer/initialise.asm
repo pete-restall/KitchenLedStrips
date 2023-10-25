@@ -12,12 +12,16 @@ frameBufferInitialise:
 	clrf _frameBufferFlags
 
 _initialiseFrameBufferPointers:
-	movlw low(frameBufferLinearStart)
+	movlw PARTITION0_PTR_START_LOW
 	movwf _frameBufferDisplayPtrLow
-	movlw high(frameBufferLinearStart)
+	movlw PARTITION0_PTR_START_HIGH
 	movwf _frameBufferDisplayPtrHigh
-	movlw low(frameBufferLinearPartition0PastEnd)
+	movlw PARTITION0_PTR_PAST_END
 	movwf _frameBufferDisplayPtrPastEnd
+
+	#if (CONFIG_PARTITION0_IS_REVERSED != 0)
+		bsf _frameBufferFlags, _FRAME_BUFFER_FLAG_PARTITION_REVERSED
+	#endif
 
 _clearFrameBuffer:
 	pagesel frameBufferClear
