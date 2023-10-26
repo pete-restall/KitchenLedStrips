@@ -62,10 +62,41 @@ _stopModulatorTimerNowThatFrameHasBeenBlittedAndModulatorHasFinished:
 _directPinsBackToAppropriateLedStripForPartition0:
 	pinsDirectClc1outToLedsForPartition0
 
+	banksel _rgbLedsPollState
+	btfss _rgbLedsPollState, _POLL_FLAG_FORCE_BLIT
+	bra _waitForFrameSync
+
+_doNotWaitForFrameSync:
+	bcf _rgbLedsPollState, _POLL_FLAG_FORCE_BLIT
+	bsf _rgbLedsPollState, _POLL_FLAG_SKIP_NEXT_BLIT_TO_RESYNC
+
+	banksel PIR0
+	btfsc PIR0, TMR0IF
+	bra _incrementFrameCounter
+	bra _syncFrameBufferAndStartBlitting
+
 _waitForFrameSync:
 	banksel PIR0
 	btfss PIR0, TMR0IF
 	retlw 0 ; waiting for frame sync - don't need calling again for a while
+
+_ignoreFrameSyncIfNeedingToResyncWithFullFrame:
+	banksel _rgbLedsPollState
+	btfss _rgbLedsPollState, _POLL_FLAG_SKIP_NEXT_BLIT_TO_RESYNC
+	bra _incrementFrameCounter
+
+	bcf _rgbLedsPollState, _POLL_FLAG_SKIP_NEXT_BLIT_TO_RESYNC
+
+	banksel PIR0
+	bcf PIR0, TMR0IF
+
+	banksel rgbLedsFrameCounter
+	incf rgbLedsFrameCounter, F
+
+	retlw 0 ; don't blit - don't need calling again for a while
+
+_incrementFrameCounter:
+	banksel PIR0
 	bcf PIR0, TMR0IF
 
 	banksel rgbLedsFrameCounter

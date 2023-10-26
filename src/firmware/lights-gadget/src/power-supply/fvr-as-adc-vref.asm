@@ -7,7 +7,7 @@
 
 _FVRCON_ADFVR_4V096 equ (b'11' << ADFVR0)
 
-.powermonitor code
+.powersupply code
 	global _powerSupplyFvrInitialise
 
 _powerSupplyFvrInitialise:

@@ -3,7 +3,7 @@
 
 	radix decimal
 
-.powermonitor code
+.powersupply code
 	global powerSupplyIsEnabled
 
 powerSupplyIsEnabled:
@@ -19,6 +19,11 @@ _returnFalseIfPowerGoodFlagIsLow:
 _returnFalseIfVoltageRailMonitoringHasNotYetStarted:
 	banksel ADCON0
 	btfss ADCON0, ADON
+	retlw 0
+
+	banksel _powerSupplyBlankingTimer
+	movf _powerSupplyBlankingTimer, F
+	btfss STATUS, Z
 	retlw 0
 
 _powerSupplyIsEnabled:

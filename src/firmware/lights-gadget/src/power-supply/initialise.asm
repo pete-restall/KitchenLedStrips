@@ -5,7 +5,7 @@
 
 	constrainedToMcuClockFrequencyHz 32000000 ; Timing-sensitive code
 
-.powermonitor code
+.powersupply code
 	global powerSupplyInitialise
 
 powerSupplyInitialise:

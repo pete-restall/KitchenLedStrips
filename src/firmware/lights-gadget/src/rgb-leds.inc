@@ -5,6 +5,7 @@
 
 	extern rgbLedsInitialise
 	extern rgbLedsPoll
+	extern rgbLedsForceNextBlitBeforeFrameSync
 	extern rgbLedsEnableBlitting
 	extern rgbLedsDisableBlitting
 

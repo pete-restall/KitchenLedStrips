@@ -7,6 +7,8 @@
 
 	constrainedToMcuInstructionFrequencyHz 8000000 ; Timing-sensitive code
 
+	extern _powerSupplyBlankingTimer
+
 .isrSharedData udata
 	global _txUnreadCount
 
@@ -97,6 +99,12 @@ _checkForNewPowerSupplyVoltageSample:
 	bra _checkPowerGoodFlagOfLedPowerSwitch
 	bcf PIR1, ADIF
 
+_skipMonitoringDuringRampUpBlankingTime:
+	banksel _powerSupplyBlankingTimer
+	movf _powerSupplyBlankingTimer, W
+	btfss STATUS, Z
+	bra _powerSupplyStillRampingUp
+
 _checkPowerSupplyVoltageIsWithinInclusiveRange:
 	banksel ADRESH
 	movf ADRESH, W
@@ -113,12 +121,30 @@ _checkPowerSupplyVoltageIsWithinInclusiveRange:
 	bra _powerMonitoringFailure
 
 _checkPowerGoodFlagOfLedPowerSwitch:
+	banksel _powerSupplyBlankingTimer
+	movf _powerSupplyBlankingTimer, W
+	btfss STATUS, Z
+	retfie
+
 	banksel PORTB
 	btfss PORTB, RB4
 	bra _powerMonitoringFailure
 
 	banksel IOCBF
 	btfss IOCBF, RB4
+	retfie
+
+_powerSupplyStillRampingUp:
+	decfsz _powerSupplyBlankingTimer, F
+	retfie
+
+_unmuteLedBitstreamTransmissionAndResetPowerGoodNowThatPowerSupplyHasRampedUp:
+	banksel CLC4POL
+	bcf CLC4POL, LC4G2POL ; data
+	bcf CLC4POL, LC4G3POL ; reset
+
+	banksel IOCBF
+	bcf IOCBF, RB4
 	retfie
 
 _powerMonitoringFailure:
@@ -129,7 +155,6 @@ _disablePowerSupplyAndLedBitstreamOutputImmediately:
 _alsoDisableLedBitstreamTransmissionInterrupt:
 	banksel PIE3
 	bcf PIE3, TX1IE
-
 	retfie
 
 

@@ -3,7 +3,7 @@
 
 	radix decimal
 
-.powermonitor code
+.powersupply code
 	global powerSupplyDisable
 
 powerSupplyDisable:

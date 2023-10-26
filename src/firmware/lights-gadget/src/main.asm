@@ -13,12 +13,15 @@
 
 	radix decimal
 
+_FLAG_POWER_SUPPLY_ENABLED equ 0
+
 .mainUdata udata
 	global mainTimebaseLow
 	global mainTimebaseHigh
 mainTimebaseLow res 1
 mainTimebaseHigh res 1
 _isMorePollingRequired res 1
+_flags res 1
 
 .main code
 	global main
@@ -27,6 +30,9 @@ main:
 _initialise:
 	pagesel initialise
 	call initialise
+
+	banksel _flags
+	clrf _flags
 
 	banksel INTCON
 	bsf INTCON, PEIE
@@ -66,6 +72,27 @@ _pollPowerSupplyModule:
 	call powerSupplyPoll
 	banksel _isMorePollingRequired
 	iorwf _isMorePollingRequired, F
+
+_forceBlitToAvoidFlashIfPowerSupplyHasBeenEnabledSinceLastPoll:
+	pagesel powerSupplyIsEnabled
+	call powerSupplyIsEnabled
+	xorlw 0
+
+	banksel _flags
+	btfsc _flags, _FLAG_POWER_SUPPLY_ENABLED
+	xorlw 1
+
+	btfsc STATUS, Z
+	bra _noNeedToForceBlit
+
+	movlw (1 << _FLAG_POWER_SUPPLY_ENABLED)
+	xorwf _flags, F
+
+	pagesel rgbLedsForceNextBlitBeforeFrameSync
+	btfss STATUS, Z
+	call rgbLedsForceNextBlitBeforeFrameSync
+
+_noNeedToForceBlit:
 
 _pollRgbLedsModule:
 	pagesel rgbLedsPoll

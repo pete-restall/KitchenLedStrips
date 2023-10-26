@@ -9,9 +9,9 @@
 
 _NCO1CLK_N1CKS_FOSC equ (b'0000' << N1CKS0)
 
-_NCO1INC_ABOUT_8KHZ equ 262
+_NCO1INC_ABOUT_8KHZ equ (262 * 2)
 
-.powermonitor code
+.powersupply code
 	global _powerSupplyNco1Initialise
 
 _powerSupplyNco1Initialise:

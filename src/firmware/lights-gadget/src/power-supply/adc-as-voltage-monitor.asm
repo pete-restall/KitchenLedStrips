@@ -15,7 +15,7 @@ _ADCON1_ADPREF_FVR equ (b'11' << ADPREF0)
 
 _ADACT_TRIGGER_NCO1 equ 0x0b
 
-.powermonitor code
+.powersupply code
 	global _powerSupplyAdcInitialise
 
 _powerSupplyAdcInitialise:

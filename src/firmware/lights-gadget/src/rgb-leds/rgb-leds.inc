@@ -4,6 +4,8 @@
 	radix decimal
 
 _POLL_FLAG_DISABLE_BLITTING equ 0
+_POLL_FLAG_FORCE_BLIT equ 1
+_POLL_FLAG_SKIP_NEXT_BLIT_TO_RESYNC equ 2
 
 	extern rgbLedsModulatorInitialise
 	extern rgbLedsModulatorIsBusy
