@@ -3,7 +3,7 @@
 
 	radix decimal
 
-RGBLEDS_NUMBER_OF_BYTES_IN_TX_BUFFER equ 4 * 3
+RGBLEDS_NUMBER_OF_BYTES_IN_TX_BUFFER equ 16 * 3
 
 	#ifdef __NEED_ISR_INTERNALS
 	extern _txBufferStart
