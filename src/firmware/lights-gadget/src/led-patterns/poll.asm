@@ -11,6 +11,11 @@ _frameCounter res 1
 	global ledPatternsPoll
 
 ledPatternsPoll:
+_onlyPollIfNotBlittingBecauseThatIsTimeCritical:
+	banksel T2CON
+	btfsc T2CON, EN
+	retlw 1
+
 	banksel _ledPatternsFlags
 	btfss _ledPatternsFlags, _LED_PATTERNS_FLAG_FRAMESYNC
 	bra _pollCurrentPattern
