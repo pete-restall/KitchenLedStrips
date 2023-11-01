@@ -36,10 +36,10 @@ provide this such as one using an
 up in Python to control some other RGB LEDs in the house via infrared has shown this can work very well, with no model training required.
 
 ## The Repository
-There are [Board Schematics](tree/master/src/schematics).
+There are [Board Schematics](src/schematics).
 
-As well as some [Photographs](tree/master/doc/bench/photos).
+As well as some [Photographs](doc/bench/photos).
 
-There is the [LED Controller Firmware](tree/master/src/firmware/lights-gadget).
+There is the [LED Controller Firmware](src/firmware/lights-gadget).
 
-Plus various [Documentation](tree/master/doc) including [Datasheets](tree/master/doc/datasheets).
+Plus various [Documentation](doc) including [Datasheets](doc/datasheets).
