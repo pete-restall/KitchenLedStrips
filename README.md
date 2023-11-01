@@ -23,7 +23,7 @@ serialisation onto the wire.  Each controller can output the frame buffer to one
 for the LED strip power rail, as well as under- and over-voltage lock-out, are provided, as is a set of GPIO for future expansion.
 
 The circuit was drawn in KiCad and the board was manufactured and assembled by JLCPCB.  To assemble the unit I soldered the through-hole parts (connectors
-and wires) to the board and I cut the enclosure faceplates using a CNC router.  The firmware is assembler and is built using
+and wires) to the board and I cut the enclosure faceplates using a CNC router.  The firmware is written in assembly and is built using
 [gputils](https://gputils.sourceforge.io/) since I keep forgetting how the Microchip XC8 compiler seems to deliberately produce bad code; redundant
 `goto`s to eat cycles, that sort of thing.  The timing of the LED bitstream is tight enough using this microcontroller that such things matter.
 
